@@ -1,6 +1,5 @@
 package com.zinglabs.zwerewolf.app;
 
-import com.zinglabs.zwerewolf.im.IMLogin;
 import com.zinglabs.zwerewolf.im.IMServer;
 
 /**
@@ -24,7 +23,7 @@ public class App {
     }
 
     public void destroy(){
-        IMLogin.instance().stopServer();
+       // IMLogin.instance().stopServer();
         IMServer.instance().stopServer();
 
     }

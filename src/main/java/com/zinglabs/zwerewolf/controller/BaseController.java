@@ -1,10 +1,12 @@
 package com.zinglabs.zwerewolf.controller;
 
+import java.util.Map;
+
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
 public interface BaseController {
-    void doAccept(short command, ByteBuf body);
+    void doDestory(Map application);
 
-    void doSend(short command,Channel channel,Object param);
+	void doAccept(short commandId,Channel channel, ByteBuf body,Map application);
 }

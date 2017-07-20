@@ -19,7 +19,7 @@ public class IMMessageManager {
     /**
      * 单聊
      */
-    public static void sendGroupMsgReq(int to,ByteBuf body){
+    public static void sendGroupMsgReq(ByteBuf body){
         int fromId = body.readInt();
         byte[] contentByte = new byte[body.readableBytes()];  
         //4、复制内容到字节数组b  

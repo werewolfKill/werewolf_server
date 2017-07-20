@@ -3,7 +3,6 @@ package com.zinglabs.zwerewolf.im;
 
 
 import com.zinglabs.zwerewolf.handler.ByteToPacketCodec;
-import com.zinglabs.zwerewolf.handler.LoginChannelHandler;
 import com.zinglabs.zwerewolf.handler.PacketChannelHandler;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -69,8 +68,8 @@ public class ThreadServerSocket extends Thread{
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*1024,0,4,-4,0,false));
                     ch.pipeline().addLast(new ByteToPacketCodec());
-                    ch.pipeline().addLast(new LoginChannelHandler(listener));
-                    ch.pipeline().addLast(new PacketChannelHandler());
+                    //ch.pipeline().addLast(new LoginChannelHandler(listener));
+                    ch.pipeline().addLast(new PacketChannelHandler(listener));
                 }
             });
 

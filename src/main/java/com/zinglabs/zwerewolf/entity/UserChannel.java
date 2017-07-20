@@ -1,4 +1,4 @@
-package com.vector.im.entity;
+package com.zinglabs.zwerewolf.entity;
 
 import io.netty.channel.Channel;
 

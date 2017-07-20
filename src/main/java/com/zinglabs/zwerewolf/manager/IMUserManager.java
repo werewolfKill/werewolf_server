@@ -1,14 +1,14 @@
-package com.vector.im.manager;
+package com.zinglabs.zwerewolf.manager;
 
-import com.vector.im.constant.ProtocolConstant;
-import com.vector.im.entity.Packet;
-import com.vector.im.entity.UserChannel;
-import com.vector.im.im.IMChannelGroup;
+
 
 import java.nio.charset.Charset;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.BiConsumer;
+
+import com.zinglabs.zwerewolf.constant.ProtocolConstant;
+import com.zinglabs.zwerewolf.entity.Packet;
+import com.zinglabs.zwerewolf.entity.UserChannel;
+import com.zinglabs.zwerewolf.im.IMChannelGroup;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;

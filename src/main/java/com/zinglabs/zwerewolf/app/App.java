@@ -1,8 +1,7 @@
-package com.vector.im.app;
+package com.zinglabs.zwerewolf.app;
 
-import com.vector.im.im.IMLogin;
-import com.vector.im.im.IMServer;
-import com.vector.im.im.ThreadServerSocket;
+import com.zinglabs.zwerewolf.im.IMLogin;
+import com.zinglabs.zwerewolf.im.IMServer;
 
 /**
  * author: vector.huang
@@ -20,7 +19,7 @@ public class App {
 
     public void create(){
         //开始服务
-        IMLogin.instance().startServer();
+       // IMLogin.instance().startServer();
         IMServer.instance().startServer();
     }
 

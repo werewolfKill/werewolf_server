@@ -1,14 +1,13 @@
-package com.vector.im.handler;
+package com.zinglabs.zwerewolf.handler;
 
-import com.vector.im.entity.Packet;
 
 import java.util.List;
+
+import com.zinglabs.zwerewolf.entity.Packet;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageCodec;
-import io.netty.handler.codec.ByteToMessageDecoder;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  *

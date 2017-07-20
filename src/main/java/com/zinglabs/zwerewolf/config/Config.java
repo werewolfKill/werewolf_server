@@ -1,4 +1,4 @@
-package com.vector.im.config;
+package com.zinglabs.zwerewolf.config;
 
 /**
  * author: vector.huang

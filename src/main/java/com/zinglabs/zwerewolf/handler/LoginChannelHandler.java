@@ -1,16 +1,16 @@
-package com.vector.im.handler;
+package com.zinglabs.zwerewolf.handler;
 
-import com.vector.im.constant.ProtocolConstant;
-import com.vector.im.entity.Packet;
-import com.vector.im.im.IMChannelGroup;
-import com.vector.im.im.ThreadServerSocket;
-import com.vector.im.manager.IMTestManager;
-import com.vector.im.manager.IMUserManager;
+
 
 import java.util.List;
 
+import com.zinglabs.zwerewolf.constant.ProtocolConstant;
+import com.zinglabs.zwerewolf.entity.Packet;
+import com.zinglabs.zwerewolf.im.ThreadServerSocket;
+import com.zinglabs.zwerewolf.manager.IMMessageManager;
+import com.zinglabs.zwerewolf.manager.IMUserManager;
+
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.MessageToMessageDecoder;
 
 /**
@@ -50,24 +50,6 @@ public class LoginChannelHandler extends MessageToMessageDecoder<Packet> {
 
         System.out.println("packet -- "+packet.getServiceId() + ":"+packet.getCommandId());
 
-        //测试服务
-        if (packet.getServiceId() == ProtocolConstant.SID_TEST) {
-            switch (packet.getCommandId()) {
-                case ProtocolConstant.CID_TEST_TEST_REQ:
-                    IMTestManager.testReq(ctx.channel(), packet.getBody());
-                    break;
-            }
-            return;
-        }
-
-        //登录服务
-        if (packet.getServiceId() == ProtocolConstant.SID_LOGIN) {
-            if (packet.getCommandId() == ProtocolConstant.CID_LOGIN_IN) {
-                ctx.channel().close();
-            }
-            return;
-        }
-
 
         //用户服务
         if (packet.getServiceId() == ProtocolConstant.SID_USER) {
@@ -75,6 +57,15 @@ public class LoginChannelHandler extends MessageToMessageDecoder<Packet> {
                 userId = IMUserManager.loginReq(ctx.channel(),packet.getBody());
                 return;
             }
+        }
+        
+        if(packet.getServiceId() == ProtocolConstant.SID_MSG){
+            switch (packet.getCommandId()){
+                case ProtocolConstant.CID_MSG_SEND_SINGLE_REQ:
+                    IMMessageManager.sendGroupMsgReq(packet.getUserId(),packet.getBody());
+                    break;
+            }
+            return;
         }
 
         if(userId <= 0){

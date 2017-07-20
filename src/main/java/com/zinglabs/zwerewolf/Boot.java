@@ -1,6 +1,7 @@
-package com.vector.im;
+package com.zinglabs.zwerewolf;
 
-import com.vector.im.app.App;
+
+import com.zinglabs.zwerewolf.app.App;
 
 import sun.misc.Signal;
 import sun.misc.SignalHandler;

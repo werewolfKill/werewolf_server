@@ -1,4 +1,4 @@
-package com.vector.im.constant;
+package com.zinglabs.zwerewolf.constant;
 
 /**
  * author: vector.huang

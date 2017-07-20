@@ -1,13 +1,12 @@
-package com.vector.im.im;
+package com.zinglabs.zwerewolf.im;
 
-import com.vector.im.config.Config;
-import com.vector.im.manager.IMLoginManager;
+
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
+import com.zinglabs.zwerewolf.config.Config;
+import com.zinglabs.zwerewolf.manager.IMLoginManager;
 
 /**
  *

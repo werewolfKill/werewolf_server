@@ -1,6 +1,8 @@
-package com.vector.im.entity;
+package com.zinglabs.zwerewolf.entity;
 
-import com.vector.im.constant.ProtocolConstant;
+
+
+import com.zinglabs.zwerewolf.constant.ProtocolConstant;
 
 import io.netty.buffer.ByteBuf;
 

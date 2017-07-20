@@ -1,18 +1,14 @@
-package com.vector.im.handler;
+package com.zinglabs.zwerewolf.handler;
 
-import com.vector.im.config.Config;
-import com.vector.im.constant.ProtocolConstant;
-import com.vector.im.entity.Packet;
-import com.vector.im.im.IMChannelGroup;
-import com.vector.im.im.ThreadServerSocket;
-import com.vector.im.manager.IMLoginManager;
-import com.vector.im.manager.IMMessageManager;
-import com.vector.im.manager.IMTestManager;
-import com.vector.im.manager.IMUserManager;
+
+
+import com.zinglabs.zwerewolf.constant.ProtocolConstant;
+import com.zinglabs.zwerewolf.entity.Packet;
+import com.zinglabs.zwerewolf.manager.IMMessageManager;
+import com.zinglabs.zwerewolf.manager.IMUserManager;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.util.ReferenceCountUtil;
 
 /**
  *
@@ -41,7 +37,7 @@ public class PacketChannelHandler extends ChannelInboundHandlerAdapter {
         if(packet.getServiceId() == ProtocolConstant.SID_MSG){
             switch (packet.getCommandId()){
                 case ProtocolConstant.CID_MSG_SEND_SINGLE_REQ:
-                    IMMessageManager.sendSingleMsgReq(packet.getUserId(),packet.getBody());
+                    IMMessageManager.sendGroupMsgReq(packet.getUserId(),packet.getBody());
                     break;
             }
             return;

@@ -1,13 +1,13 @@
-package com.vector.im.im;
+package com.zinglabs.zwerewolf.im;
 
-import com.vector.im.entity.UserChannel;
+
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import io.netty.channel.Channel;
+import com.zinglabs.zwerewolf.entity.UserChannel;
 
 /**
  * author: vector.huang

@@ -20,9 +20,12 @@ public class MessageController implements BaseController{
 	public void doAccept(short commandId, Channel channel, ByteBuf body,Map application) {
 		
 			switch (commandId) {
-			case ProtocolConstant.CID_MSG_SEND_SINGLE_REQ:
-				IMMessageManager.sendGroupMsgReq(body);
+			case ProtocolConstant.CID_MSG_TEXT_REQ:
+				IMMessageManager.sendGroupTextReq(body);
 				break;
+			case ProtocolConstant.CID_MSG_VOICE_REQ:
+				IMMessageManager.sendGroupVoiceReq(body);
+				break;	
 			}
 			
 	}

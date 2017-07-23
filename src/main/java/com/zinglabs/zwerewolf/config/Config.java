@@ -6,7 +6,7 @@ package com.zinglabs.zwerewolf.config;
  */
 public interface Config {
 
-    String SERVER_HOST = "192.168.0.151";
+    String SERVER_HOST = "192.168.0.102";
     int SERVER_PORT = 8080;
     int LOGIN_PORT = 8090;
 

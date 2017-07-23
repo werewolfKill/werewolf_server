@@ -23,8 +23,13 @@ public interface ProtocolConstant {
      * 消息服务
      */
     short SID_MSG = 2;
-    short CID_MSG_SEND_SINGLE_REQ = 1;
-    short CID_MSG_RECEIVE_SINGLE_OUT = 2;
+    short CID_MSG_TEXT_REQ = 1;
+    short CID_MSG_TEXT_RESP = 2;
+    short CID_MSG_VOICE_REQ = 3;
+    short CID_MSG_VOICE_INTERRUPT_REQ = 4;
+    short CID_MSG_VOICE_END_REQ = 5;
+    short CID_MSG_VOICE_RESP = 6;
+    short CID_MSG_VOICE_END_RESP = 7;
 
 
 }

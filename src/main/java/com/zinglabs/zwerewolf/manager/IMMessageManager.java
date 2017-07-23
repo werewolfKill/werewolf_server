@@ -19,7 +19,7 @@ public class IMMessageManager {
     /**
      * 单聊
      */
-    public static void sendGroupMsgReq(ByteBuf body){
+    public static void sendGroupTextReq(ByteBuf body){
         int fromId = body.readInt();
         byte[] contentByte = new byte[body.readableBytes()];  
         //4、复制内容到字节数组b  
@@ -39,10 +39,31 @@ public class IMMessageManager {
             
             msg.writeInt(contentByte.length);
             msg.writeBytes(contentByte);
-            Packet packet = new Packet(msg.readableBytes()+12, ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_RECEIVE_SINGLE_OUT,
+            Packet packet = new Packet(msg.readableBytes()+12, ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_TEXT_RESP,
                     msg);
             toChannel.writeAndFlush(packet);
         });
     }
+
+	public static void sendGroupVoiceReq(ByteBuf body) {
+		int fromId = body.readInt();
+		int audiodataLength =  body.readInt();
+        byte[] audiodata = new byte[audiodataLength];
+        body.readBytes(audiodataLength).readBytes(audiodata);
+        //4、复制内容到字节数组b  
+        Map<Integer, UserChannel> userChannels = IMChannelGroup.instance().getChannels();
+        userChannels.forEach((userId,userChannel)->{
+        	if(userId != fromId){
+        		Channel toChannel = userChannel.getChannel();
+        		ByteBuf msg = toChannel.alloc().buffer(audiodata.length + 4);
+        		
+        		msg.writeInt(audiodata.length);
+        		msg.writeBytes(audiodata);
+        		Packet packet = new Packet(msg.readableBytes()+12, ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_VOICE_RESP,
+                        msg);
+                toChannel.writeAndFlush(packet);
+        	}
+        });
+	}
 
 }

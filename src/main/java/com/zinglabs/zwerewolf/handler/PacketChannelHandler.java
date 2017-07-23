@@ -1,20 +1,15 @@
 package com.zinglabs.zwerewolf.handler;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.zinglabs.zwerewolf.config.ProcessorTable;
-import com.zinglabs.zwerewolf.constant.ProtocolConstant;
 import com.zinglabs.zwerewolf.controller.BaseController;
 import com.zinglabs.zwerewolf.entity.Packet;
 import com.zinglabs.zwerewolf.im.ThreadServerSocket;
-import com.zinglabs.zwerewolf.manager.IMMessageManager;
-import com.zinglabs.zwerewolf.manager.IMUserManager;
-
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *

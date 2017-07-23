@@ -1,14 +1,13 @@
 package com.zinglabs.zwerewolf.manager;
 
-import java.util.Map;
-
 import com.zinglabs.zwerewolf.constant.ProtocolConstant;
 import com.zinglabs.zwerewolf.entity.Packet;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 import com.zinglabs.zwerewolf.im.IMChannelGroup;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
+
+import java.util.Map;
 
 /**
  * author: vector.huang
@@ -17,7 +16,8 @@ import io.netty.channel.Channel;
 public class IMMessageManager {
 
     /**
-     * 单聊
+     * 群聊文字消息转发
+     * @param body 消息体
      */
     public static void sendGroupTextReq(ByteBuf body){
         int fromId = body.readInt();
@@ -41,10 +41,17 @@ public class IMMessageManager {
             msg.writeBytes(contentByte);
             Packet packet = new Packet(msg.readableBytes()+12, ProtocolConstant.SID_MSG,ProtocolConstant.CID_MSG_TEXT_RESP,
                     msg);
+
+
             toChannel.writeAndFlush(packet);
+            System.out.println("send to  username: %s, msg: %s"+body);
         });
     }
 
+    /**
+     * 群聊语音消息转发
+     * @param body 消息体
+     */
 	public static void sendGroupVoiceReq(ByteBuf body) {
 		int fromId = body.readInt();
 		int audiodataLength =  body.readInt();

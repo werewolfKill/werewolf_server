@@ -14,6 +14,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
 /**
+ * 用户信息转发器
  * author: vector.huang
  * date：2016/4/18 22:37
  */

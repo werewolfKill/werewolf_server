@@ -10,6 +10,7 @@ import io.netty.channel.Channel;
 import java.util.Map;
 
 /**
+ * 聊天消息转发器
  * author: vector.huang
  * date：2016/4/18 21:01
  */
@@ -72,5 +73,7 @@ public class IMMessageManager {
         	}
         });
 	}
+
+
 
 }

@@ -56,25 +56,55 @@ public interface ProtocolConstant {
     short CID_MSG_VOICE_END_RESP = 7;
 
     /**
+     *业务(business)服务
+     */
+    short SID_BNS=3;
+
+    //创建房间请求
+    short CID_BNS_CRE_ROOM_REQ=1;
+
+    //创建房间响应
+    short CID_BNS_CRE_ROOM_RESP=2;
+
+    //随机进入房间请求
+    short CID_BNS_ENTER_ROOM_REQ =3;
+
+    //随机进入房间响应
+    short CID_BNS_ENTER_ROOM_RESP =4;
+
+    //搜索房间请求
+    short CID_BNS_FIND_ROOM_REQ=5;
+
+    //搜索房间响应
+    short CID_BNS_FIND_ROOM_RESP=6;
+
+
+    /**
      * 游戏流程服务
      */
     //服务号，表示游戏流程
-    short SID_GAME = 3;
+    short SID_GAME = 4;
 
     //准备游戏
-    short CID_GAME_READY=1;
+    short CID_GAME_READY_REQ=1;
 
-    //进入天黑
-    short CID_GAME_DARK=2;
+    //准备游戏确认
+    short CID_GAME_READY_RESP=2;
+
+    //进入天黑（开始游戏）
+    short CID_GAME_DARK=3;
 
     //天亮
-    short CID_GAME_DAWN=3;
+    short CID_GAME_DAWN=4;
 
-    //狼人杀人
-    short CID_GAME_KILL=4;
+    //狼人杀人请求
+    short CID_GAME_KILL_REQ=5;
 
-    //确认狼人杀人信息
-    short CID_GAME_KILL_DONE=5;
+    //狼人杀人响应
+    short CID_GAME_KILL_RESP=6;
+
+    //狼人杀人结果响应
+    short CID_GAME_KILL_RES_RESP=7;
 
     //略
 

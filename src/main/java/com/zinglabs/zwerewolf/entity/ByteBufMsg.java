@@ -5,7 +5,7 @@ package com.zinglabs.zwerewolf.entity;
  * @author wangtonghe
  * @date 2017/7/24 09:28
  */
-public class MessageBody {
+public class ByteBufMsg {
 
     /**
      * 消息发送者id
@@ -18,9 +18,23 @@ public class MessageBody {
     private int length;
 
     /**
+     * 房间id
+     */
+    private int roomId;
+
+    /**
+
      * 消息内容
      */
-    private byte[] content;
+    private Object content;
+
+    public int getRoomId() {
+        return roomId;
+    }
+
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
+    }
 
     public int getFromId() {
         return fromId;
@@ -38,11 +52,11 @@ public class MessageBody {
         this.length = length;
     }
 
-    public byte[] getContent() {
+    public Object getContent() {
         return content;
     }
 
-    public void setContent(byte[] content) {
+    public void setContent(Object content) {
         this.content = content;
     }
 }

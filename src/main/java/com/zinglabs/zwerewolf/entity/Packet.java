@@ -42,6 +42,11 @@ public class Packet {
         this.body = body;
     }
 
+    public Packet(short serviceId,short commandId){
+        this.serviceId = serviceId;
+        this.commandId = commandId;
+    }
+
 
     public int getLength() {
         return length;

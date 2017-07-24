@@ -36,6 +36,7 @@ public class IMMessageManager {
             msg.writeInt(fromId);
             
             msg.writeInt(fromName.length);
+
             msg.writeBytes(fromName);
             
             msg.writeInt(contentByte.length);

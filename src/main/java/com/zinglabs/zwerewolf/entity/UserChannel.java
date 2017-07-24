@@ -1,5 +1,6 @@
 package com.zinglabs.zwerewolf.entity;
 
+import com.zinglabs.zwerewolf.entity.role.Role;
 import io.netty.channel.Channel;
 
 /**
@@ -15,6 +16,26 @@ public class UserChannel {
     private String username;
 
     private Channel channel;
+
+    private Role role;
+
+    private Room room;
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
 
     public int getUserId() {
         return userId;

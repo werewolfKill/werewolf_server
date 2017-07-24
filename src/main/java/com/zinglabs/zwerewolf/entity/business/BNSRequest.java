@@ -1,11 +1,11 @@
-package com.zinglabs.zwerewolf.entity;
+package com.zinglabs.zwerewolf.entity.business;
 
 /**
  * 解析后的消息实体
  * @author wangtonghe
  * @date 2017/7/24 09:28
  */
-public class ByteBufMsg {
+public class BNSRequest {
 
     /**
      * 消息发送者id
@@ -23,7 +23,6 @@ public class ByteBufMsg {
     private int roomId;
 
     /**
-
      * 消息内容
      */
     private Object content;
@@ -59,4 +58,6 @@ public class ByteBufMsg {
     public void setContent(Object content) {
         this.content = content;
     }
+
+
 }

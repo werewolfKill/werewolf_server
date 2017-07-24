@@ -1,10 +1,11 @@
-package com.zinglabs.zwerewolf.entity;
+package com.zinglabs.zwerewolf.entity.business;
 
 /**
+ * 封装的业务响应实体
  * @author wangtonghe
  * @date 2017/7/24 18:08
  */
-public class BNSMsgBody {
+public class BNSResponse {
 
     /**
      * 服务id
@@ -12,9 +13,9 @@ public class BNSMsgBody {
     private short serviceId;
 
     /**
-     * commonId
+     * command
      */
-    private short commonId;
+    private short command;
 
     /**
      * 业务用int表示响应码，具体含义与具体命令有关,不用设0
@@ -28,9 +29,9 @@ public class BNSMsgBody {
 
     private int roomId;
 
-    public BNSMsgBody(short serviceId, short commonId,  int fromId ,int roomId,int reply) {
+    public BNSResponse(short serviceId, short command, int fromId , int roomId, int reply) {
         this.serviceId = serviceId;
-        this.commonId = commonId;
+        this.command = command;
         this.reply = reply;
         this.roomId = roomId;
         this.fromId = fromId;
@@ -52,12 +53,12 @@ public class BNSMsgBody {
         this.serviceId = serviceId;
     }
 
-    public short getCommonId() {
-        return commonId;
+    public short getCommand() {
+        return command;
     }
 
-    public void setCommonId(short commonId) {
-        this.commonId = commonId;
+    public void setCommand(short command) {
+        this.command = command;
     }
 
     public int getReply() {

@@ -26,7 +26,7 @@ public class IMBusinessManager {
         senders.forEach((userId,userChannel) -> {
 
             Channel toChannel = userChannel.getChannel();
-            ByteBuf byteBuf = toChannel.alloc().buffer(8);  //3个int
+            ByteBuf byteBuf = toChannel.alloc().buffer(8);  //2个int
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
 

@@ -45,9 +45,10 @@ public class GameController implements BaseController {
                 IMBusinessManager.sendGroup(bnsResponse, readyChannels);
 
                 //TODO 添加判断是否所有玩家准备好，则直接进入游戏（天黑）
-                if (readyChannels.size() == 12) {
+                if (readyChannels.size() == 1) {
                     bnsResponse.setCommand(ProtocolConstant.CID_GAME_DARK);
                     bnsResponse.setReply(0);
+
                     //发送天黑命令，客户端各角色进入自己状态
                     IMBusinessManager.sendGroup(bnsResponse, readyChannels);
 

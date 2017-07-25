@@ -10,6 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 
 /**
+ * 暂存用户信息
  * author: vector.huang
  * date：2016/4/18 20:42
  */

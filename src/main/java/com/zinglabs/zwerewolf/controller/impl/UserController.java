@@ -17,7 +17,7 @@ public class UserController implements BaseController{
 	}
 
 	@Override
-	public void doAccept(short commandId, Channel channel, ByteBuf body,Map application) {
+	public void doAccept(short commandId, Channel channel, ByteBuf body,Map<String,Object> application) {
 		switch (commandId) {
 		case ProtocolConstant.CID_USER_LOGIN_REQ:
 			int userId = IMUserManager.loginReq(channel, body);

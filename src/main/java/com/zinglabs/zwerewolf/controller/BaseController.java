@@ -8,5 +8,5 @@ import io.netty.channel.Channel;
 public interface BaseController {
     void doDestory(Map application);
 
-	void doAccept(short commandId,Channel channel, ByteBuf body,Map application);
+	void doAccept(short commandId,Channel channel, ByteBuf body,Map<String,Object> application);
 }

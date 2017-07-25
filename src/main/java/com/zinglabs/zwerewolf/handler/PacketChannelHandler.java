@@ -20,7 +20,7 @@ import java.util.Map;
 public class PacketChannelHandler extends ChannelInboundHandlerAdapter {
 	private static final ByteBuf Channel = null;
 	private ThreadServerSocket.OnChannelActiveListener listener;
-	private Map application = new HashMap<>();
+	private Map<String,Object> application = new HashMap<>();
 	public PacketChannelHandler(ThreadServerSocket.OnChannelActiveListener listener) {
 		this.listener = listener;
 	}

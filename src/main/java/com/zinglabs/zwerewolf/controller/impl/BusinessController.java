@@ -17,7 +17,7 @@ public class BusinessController implements BaseController{
     }
 
     @Override
-    public void doAccept(short commandId, Channel channel, ByteBuf body, Map application) {
+    public void doAccept(short commandId, Channel channel, ByteBuf body, Map<String,Object> application) {
 
     }
 }

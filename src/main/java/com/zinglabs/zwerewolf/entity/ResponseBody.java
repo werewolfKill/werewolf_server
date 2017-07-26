@@ -1,11 +1,11 @@
-package com.zinglabs.zwerewolf.entity.business;
+package com.zinglabs.zwerewolf.entity;
 
 /**
- * 封装的业务响应实体
+ * 封装的响应实体
  * @author wangtonghe
  * @date 2017/7/24 18:08
  */
-public class BNSResponse {
+public class ResponseBody {
 
     /**
      * 服务id
@@ -29,12 +29,19 @@ public class BNSResponse {
 
     private int roomId;
 
-    public BNSResponse(short serviceId, short command, int fromId , int roomId, int reply) {
+    public ResponseBody(short serviceId, short command, int fromId , int reply) {
         this.serviceId = serviceId;
         this.command = command;
         this.reply = reply;
-        this.roomId = roomId;
         this.fromId = fromId;
+    }
+
+    public ResponseBody(short serviceId, short command,int roomId, int fromId, int reply ) {
+        this.serviceId = serviceId;
+        this.command = command;
+        this.reply = reply;
+        this.fromId = fromId;
+        this.roomId = roomId;
     }
 
     public int getRoomId() {

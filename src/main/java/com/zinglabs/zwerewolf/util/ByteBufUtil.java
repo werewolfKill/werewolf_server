@@ -1,6 +1,6 @@
 package com.zinglabs.zwerewolf.util;
 
-import com.zinglabs.zwerewolf.entity.business.BNSRequest;
+import com.zinglabs.zwerewolf.entity.RequestBody;
 import io.netty.buffer.ByteBuf;
 
 /**
@@ -12,21 +12,38 @@ import io.netty.buffer.ByteBuf;
 public class ByteBufUtil {
 
     /**
-     * 解析业务类型消息体(包括业务及游戏流程服务类型)
+     * 解析游戏类型消息体
      *
      * @param body 消息体
-     * @return BNSRequest
+     * @return RequestBody
      */
-    public static BNSRequest encodeBNS(ByteBuf body) {
+    public static RequestBody encodeGame(ByteBuf body) {
         int fromId = body.readInt();
         int roomId = body.readInt();
         int order = body.readInt();
-        BNSRequest msgBody = new BNSRequest();
+        RequestBody msgBody = new RequestBody();
         msgBody.setContent(order);
         msgBody.setFromId(fromId);
         msgBody.setRoomId(roomId);
         return msgBody;
     }
+
+    /**
+     * 解析业务相关消息体
+     * @param body 消息体
+     * @return RequestBody
+     */
+    public static RequestBody encodeBusiness(ByteBuf body){
+        int fromId = body.readInt();
+        int order = body.readInt();
+        RequestBody msgBody = new RequestBody();
+        msgBody.setContent(order);
+        msgBody.setFromId(fromId);
+        return msgBody;
+
+    }
+
+
 
 
 }

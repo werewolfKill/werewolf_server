@@ -1,6 +1,6 @@
 package com.zinglabs.zwerewolf.manager;
 
-import com.zinglabs.zwerewolf.entity.business.BNSResponse;
+import com.zinglabs.zwerewolf.entity.ResponseBody;
 import com.zinglabs.zwerewolf.entity.Packet;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 import io.netty.buffer.ByteBuf;
@@ -21,7 +21,7 @@ public class IMBusinessManager {
      * @param body    消息体
      * @param senders 发送者集合
      */
-    public static void sendGroup(BNSResponse body, Map<Integer,UserChannel> senders) {
+    public static void sendGroup(ResponseBody body, Map<Integer,UserChannel> senders) {
 
         senders.forEach((userId,userChannel) -> {
 

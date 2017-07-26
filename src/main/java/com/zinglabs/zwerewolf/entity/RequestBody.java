@@ -1,11 +1,11 @@
-package com.zinglabs.zwerewolf.entity.business;
+package com.zinglabs.zwerewolf.entity;
 
 /**
  * 解析后的消息实体
  * @author wangtonghe
  * @date 2017/7/24 09:28
  */
-public class BNSRequest {
+public class RequestBody {
 
     /**
      * 消息发送者id

@@ -91,22 +91,26 @@ public interface ProtocolConstant {
     //准备游戏确认
     short CID_GAME_READY_RESP=2;
 
+    //开始游戏请求
+    short CID_GAME_START_REQ =3;
+
+    //开始游戏确认
+    short CID_GAME_START_RESP =4;
+
     //进入天黑（开始游戏）
-    short CID_GAME_DARK=3;
+    short CID_GAME_DARK=5;
 
     //天亮
-    short CID_GAME_DAWN=4;
+    short CID_GAME_DAWN=6;
 
     //狼人杀人请求
-    short CID_GAME_KILL_REQ=5;
+    short CID_GAME_KILL_REQ=7;
 
     //狼人杀人响应
-    short CID_GAME_KILL_RESP=6;
+    short CID_GAME_KILL_RESP=8;
 
     //狼人杀人结果响应
-    short CID_GAME_KILL_RES_RESP=7;
-
-    //略
+    short CID_GAME_KILL_RES_RESP=9;
 
 
 }

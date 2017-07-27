@@ -31,41 +31,46 @@ public class GameController implements BaseController {
         RequestBody requestBody = ByteBufUtil.encodeGame(body);
         int fromId = requestBody.getFromId();
         int content = (Integer) requestBody.getContent();
-        ResponseBody responseBody = null;
+        Map<ResponseBody,UserChannel> msgGourp = new HashMap<>();
 
         switch (commandId) {
             case ProtocolConstant.CID_GAME_READY_REQ:  //准备游戏
 
-                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_READY_RESP,
+                ResponseBody readyBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_READY_RESP,
                         fromId,  0);
-                //模拟所有玩家用户  //TODO 根据房间号搜索用户
+                //TODO 根据房间号搜索用户
                 Map<Integer, UserChannel> readyChannels = IMChannelGroup.instance().getChannels();
+                readyChannels.forEach((id,chan)->{
+                    msgGourp.put(readyBody,chan);
+                });
+                IMBusinessManager.sendGroup(msgGourp);
 
-                IMBusinessManager.sendGroup(responseBody, readyChannels);
+                break;
+            case ProtocolConstant.CID_GAME_START_REQ: //开始游戏
+                Map<Integer, UserChannel> startChannels = IMChannelGroup.instance().getChannels();
+                ResponseBody startBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_RESP,
+                        fromId,  1);
+                startChannels.forEach((id,chan)->{
+                    msgGourp.put(startBody,chan);
+                });
+                //模拟所有玩家用户
+                Map<Integer, UserChannel> darkChannels = IMChannelGroup.instance().getChannels();
 
-                //TODO 添加判断是否所有玩家准备好，则直接进入游戏（天黑）
-                if (readyChannels.size() == 12) {
-                    responseBody.setCommand(ProtocolConstant.CID_GAME_DARK);
-                    responseBody.setReply(0);
+                IMBusinessManager.sendGroup(msgGourp);
 
-                    //发送天黑命令，客户端各角色进入自己状态
-                    IMBusinessManager.sendGroup(responseBody, readyChannels);
-
-                }
                 break;
             case ProtocolConstant.CID_GAME_KILL_REQ:   //狼人杀人
                 //向所有狼人发送杀人信息
-                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
+                ResponseBody  killBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
                         fromId, content);
                 //模拟所有玩家用户  //TODO 根据房间号搜索狼人
-                Map<Integer,UserChannel>  wolfs = new HashMap<>();
                 Map<Integer, UserChannel> userChannels = IMChannelGroup.instance().getChannels();
                 userChannels.forEach((userId,chan)->{
                     if(userId%2==1){
-                        wolfs.put(userId,chan);
+                        msgGourp.put(killBody,chan);
                     }
                 });
-                IMBusinessManager.sendGroup(responseBody, wolfs);
+                IMBusinessManager.sendGroup(msgGourp);
                 break;
         }
 

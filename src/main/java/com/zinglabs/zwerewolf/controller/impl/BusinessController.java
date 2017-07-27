@@ -12,6 +12,7 @@ import com.zinglabs.zwerewolf.util.ByteBufUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -30,18 +31,18 @@ public class BusinessController implements BaseController{
         RequestBody requestBody = ByteBufUtil.encodeBusiness(body);
         int fromId = requestBody.getFromId();
         int content = (Integer) requestBody.getContent();
-        ResponseBody responseBody = null;
+        Map<ResponseBody,UserChannel> msgGourp = new HashMap<>();
+
 
         switch (commandId) {
             case ProtocolConstant.CID_BNS_CRE_ROOM_REQ:  //创建房间
-                int roomId =businessService.createRoom(fromId);
-                responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
+                int roomId =businessService.createRoom(fromId,1);
+                ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
                         fromId,  roomId);
                 Map<Integer, UserChannel> channels = IMChannelGroup.instance().getChannels();
                 UserChannel userChannel = channels.get(fromId);
-                channels.clear();
-                channels.put(fromId,userChannel);
-                IMBusinessManager.sendGroup(responseBody, channels);
+                msgGourp.put(responseBody,userChannel);
+                IMBusinessManager.sendGroup(msgGourp);
                 break;
 
         }

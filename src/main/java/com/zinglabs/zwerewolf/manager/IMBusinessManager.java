@@ -18,12 +18,11 @@ public class IMBusinessManager {
 
     /**
      * 转发业务消息，通用方法
-     * @param body    消息体
      * @param senders 发送者集合
      */
-    public static void sendGroup(ResponseBody body, Map<Integer,UserChannel> senders) {
+    public static void sendGroup(Map<ResponseBody,UserChannel> senders) {
 
-        senders.forEach((userId,userChannel) -> {
+        senders.forEach((body,userChannel) -> {
 
             Channel toChannel = userChannel.getChannel();
             ByteBuf byteBuf = toChannel.alloc().buffer(8);  //2个int

@@ -28,9 +28,9 @@ public class BusinessController implements BaseController{
 
     @Override
     public void doAccept(short commandId, Channel channel, ByteBuf body, Map<String,Object> application) {
-        RequestBody requestBody = ByteBufUtil.encodeBusiness(body);
+        RequestBody requestBody = ByteBufUtil.resolveBusiness(body);
         int fromId = requestBody.getFromId();
-        int content = (Integer) requestBody.getContent();
+        int code = requestBody.getCode();
         Map<ResponseBody,UserChannel> msgGourp = new HashMap<>();
 
 

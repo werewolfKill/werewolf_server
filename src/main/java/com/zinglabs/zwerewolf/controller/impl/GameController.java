@@ -28,9 +28,9 @@ public class GameController implements BaseController {
 
     @Override
     public void doAccept(short commandId, Channel channel, ByteBuf body, Map<String,Object> application) {
-        RequestBody requestBody = ByteBufUtil.encodeGame(body);
+        RequestBody requestBody = ByteBufUtil.resolveGame(body);
         int fromId = requestBody.getFromId();
-        int content = (Integer) requestBody.getContent();
+        int code = requestBody.getCode();
         Map<ResponseBody,UserChannel> msgGourp = new HashMap<>();
 
         switch (commandId) {
@@ -54,15 +54,12 @@ public class GameController implements BaseController {
                     msgGourp.put(startBody,chan);
                 });
                 //模拟所有玩家用户
-                Map<Integer, UserChannel> darkChannels = IMChannelGroup.instance().getChannels();
-
                 IMBusinessManager.sendGroup(msgGourp);
-
                 break;
             case ProtocolConstant.CID_GAME_KILL_REQ:   //狼人杀人
                 //向所有狼人发送杀人信息
                 ResponseBody  killBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
-                        fromId, content);
+                        fromId, code);
                 //模拟所有玩家用户  //TODO 根据房间号搜索狼人
                 Map<Integer, UserChannel> userChannels = IMChannelGroup.instance().getChannels();
                 userChannels.forEach((userId,chan)->{

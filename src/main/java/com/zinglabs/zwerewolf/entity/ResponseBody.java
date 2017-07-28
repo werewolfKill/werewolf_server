@@ -1,5 +1,7 @@
 package com.zinglabs.zwerewolf.entity;
 
+import java.util.Map;
+
 /**
  * 封装的响应实体
  * @author wangtonghe
@@ -13,7 +15,7 @@ public class ResponseBody {
     private short serviceId;
 
     /**
-     * command
+     * commandId
      */
     private short command;
 
@@ -27,7 +29,10 @@ public class ResponseBody {
      */
     private int fromId;
 
-    private int roomId;
+    /**
+     * 其他参数
+     */
+    private Map<String,Object> param;
 
     public ResponseBody(short serviceId, short command, int fromId , int reply) {
         this.serviceId = serviceId;
@@ -36,21 +41,14 @@ public class ResponseBody {
         this.fromId = fromId;
     }
 
-    public ResponseBody(short serviceId, short command,int roomId, int fromId, int reply ) {
-        this.serviceId = serviceId;
-        this.command = command;
-        this.reply = reply;
-        this.fromId = fromId;
-        this.roomId = roomId;
+    public Map<String, Object> getParam() {
+        return param;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public void setParam(Map<String, Object> param) {
+        this.param = param;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
-    }
 
     public short getServiceId() {
         return serviceId;

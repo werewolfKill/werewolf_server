@@ -17,12 +17,12 @@ public class ByteBufUtil {
      * @param body 消息体
      * @return RequestBody
      */
-    public static RequestBody encodeGame(ByteBuf body) {
+    public static RequestBody resolveGame(ByteBuf body) {
         int fromId = body.readInt();
         int roomId = body.readInt();
         int order = body.readInt();
         RequestBody msgBody = new RequestBody();
-        msgBody.setContent(order);
+        msgBody.setCode(order);
         msgBody.setFromId(fromId);
         msgBody.setRoomId(roomId);
         return msgBody;
@@ -33,11 +33,11 @@ public class ByteBufUtil {
      * @param body 消息体
      * @return RequestBody
      */
-    public static RequestBody encodeBusiness(ByteBuf body){
+    public static RequestBody resolveBusiness(ByteBuf body){
         int fromId = body.readInt();
         int order = body.readInt();
         RequestBody msgBody = new RequestBody();
-        msgBody.setContent(order);
+        msgBody.setCode(order);
         msgBody.setFromId(fromId);
         return msgBody;
 

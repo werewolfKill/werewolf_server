@@ -23,6 +23,11 @@ public class RequestBody {
     private int roomId;
 
     /**
+     * 请求码
+     */
+    private int code;
+
+    /**
      * 消息内容
      */
     private Object content;
@@ -59,5 +64,11 @@ public class RequestBody {
         this.content = content;
     }
 
+    public int getCode() {
+        return code;
+    }
 
+    public void setCode(int code) {
+        this.code = code;
+    }
 }

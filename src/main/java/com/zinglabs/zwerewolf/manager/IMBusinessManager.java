@@ -62,8 +62,9 @@ public class IMBusinessManager {
                         byteBuf.writeInt(role.getPosition());
                     });
                 }
+            }else{
+                byteBuf.writeInt(0); //标识是否结束
             }
-            byteBuf.writeInt(0); //标识是否结束
             Packet packet = new Packet(12+byteBuf.readableBytes(),body.getServiceId(),body.getCommand(),byteBuf);
             userChannel.getChannel().writeAndFlush(packet);
 

@@ -37,11 +37,6 @@ public class Room {
      */
     private Map<Integer,UserRole> people = new HashMap<>();
 
-    /**
-     * 当前人数
-     */
-    private int curNumber;
-
 
     public Room(int id, int modalId, int owner) {
         this.id = id;
@@ -101,7 +96,7 @@ public class Room {
         }
         UserRole userRole = new UserRole();
         userRole.setPosition(people.size() + 1);
-        userRole.setUsrId(userId);
+        userRole.setUserId(userId);
         people.put(userId, userRole);
         return true;
     }

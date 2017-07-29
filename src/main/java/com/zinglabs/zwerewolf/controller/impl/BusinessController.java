@@ -53,16 +53,16 @@ public class BusinessController implements BaseController {
             case ProtocolConstant.CID_BNS_FIND_ROOM_REQ:  //搜索房间并进入，code为要搜索的房间号
                 Room serRoom = businessService.searchAndEnterRoom(fromId, code);
                 if (serRoom == null) {                //房间不存在
-                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
+                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_NOT_EXIST);
                 } else if (serRoom.enterRoom(fromId)) {     //房间进入成功
-                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
+                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_SUCCESS);
                     Map<String, Object> param = new HashMap<>();
                     param.put("room", serRoom);
                     responseBody.setParam(param);
                 } else {
-                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
+                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_ALREADY_FULL);  //房间已满
                 }
                 UserChannel chan = channels.get(fromId);

@@ -9,12 +9,6 @@ public class Hunter implements Role {
 
     private static final String NAME = "猎人";
 
-    private int number;
-
-    public Hunter(int number) {
-        this.number = number;
-    }
-
     public static String getNAME() {
         return NAME;
     }

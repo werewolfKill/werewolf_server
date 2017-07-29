@@ -7,7 +7,7 @@ package com.zinglabs.zwerewolf.entity.role;
  */
 public class Villager implements Role{
 
-    public static final String NAME = "村民";
+    private static final String NAME = "村民";
 
     public static String getNAME() {
         return NAME;

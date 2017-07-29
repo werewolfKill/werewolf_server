@@ -15,7 +15,7 @@ import com.zinglabs.zwerewolf.entity.UserChannel;
  * date：2016/4/18 20:42
  */
 public class IMChannelGroup {
-    private static int sId = 0;
+    private static int sId = 100;
 
     private Map<Integer,UserChannel> channels;
 

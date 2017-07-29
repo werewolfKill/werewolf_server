@@ -10,10 +10,6 @@ public class Prorhet implements Role {
 
     private int number;
 
-    public Prorhet(int number) {
-        this.number = number;
-    }
-
     public static String getNAME() {
         return NAME;
     }

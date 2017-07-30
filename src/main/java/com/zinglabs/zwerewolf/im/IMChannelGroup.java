@@ -58,4 +58,10 @@ public class IMChannelGroup {
     public Map<Integer, UserChannel> getChannels() {
         return channels;
     }
+
+    //测试用，模拟数据
+    public void setUserChannel(int userId,UserChannel channel){
+        channels.put(userId,channel);
+
+    }
 }

@@ -11,6 +11,7 @@ import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.im.IMChannelGroup;
 import com.zinglabs.zwerewolf.manager.IMBusinessManager;
 import com.zinglabs.zwerewolf.service.GameService;
+import com.zinglabs.zwerewolf.service.UserService;
 import com.zinglabs.zwerewolf.util.ByteBufUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -30,6 +31,8 @@ public class GameController implements BaseController {
 
     private GameService gameService = new GameService();
 
+    private UserService userService = new UserService();
+
     @Override
     public void doDestory(Map application) {
 
@@ -42,35 +45,31 @@ public class GameController implements BaseController {
         int roomId = requestBody.getRoomId();
         int code = requestBody.getCode();
         Map<ResponseBody, UserChannel> msgGourp = new HashMap<>();
+        Map<Integer, UserChannel> userChannels = userService.getByRoomId(roomId);
+
         Room room;
         ResponseBody responseBody;
         UserChannel userChannel;
 
         switch (commandId) {
-            case ProtocolConstant.CID_GAME_READY_REQ:  //准备游戏
-
+            case ProtocolConstant.CID_GAME_READY_REQ:  //准备、离开游戏
+                int ready =  gameService.readyGame(fromId,roomId);
                 ResponseBody readyBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_READY_RESP,
-                        fromId, 0);
-                //TODO 根据房间号搜索用户
-                Map<Integer, UserChannel> readyChannels = IMChannelGroup.instance().getChannels();
-                readyChannels.forEach((id, chan) -> {
-                    msgGourp.put(readyBody, chan);
-                });
+                        fromId, ready);
+                userChannels.forEach((id, chan) -> msgGourp.put(readyBody, chan));
                 IMBusinessManager.sendGroup(msgGourp);
-
                 break;
             case ProtocolConstant.CID_GAME_START_REQ: //开始游戏
-                Map<Integer, UserChannel> startChannels = IMChannelGroup.instance().getChannels();
                 room = gameService.checkRoom(roomId, fromId);
                 if (room == null) {
                     responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_FAIL,
                             fromId, Config.ROOM_NOT_EXIST);
-                    userChannel = startChannels.get(fromId);
+                    userChannel = userChannels.get(fromId);
                     msgGourp.put(responseBody, userChannel);
                 } else if (room.getCurNumber() < room.getNumber()) {
                     responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_FAIL,
                             fromId, Config.ROOM_NOT_ENOUGH_NUM);
-                    userChannel = startChannels.get(fromId);
+                    userChannel = userChannels.get(fromId);
                     msgGourp.put(responseBody, userChannel);
                 } else {
                     Map<Integer,UserRole> roleMap = gameService.allotRoles(room);
@@ -81,7 +80,7 @@ public class GameController implements BaseController {
                         }
                     });
                     roleMap.forEach((id,ur)->{
-                        UserChannel uchan = startChannels.get(id);
+                        UserChannel uchan = userChannels.get(id);
                         ResponseBody resBody  = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_RESP,
                                 fromId,ur.getRoleId());
                         Map<String,Object> param = new HashMap<>();
@@ -99,7 +98,6 @@ public class GameController implements BaseController {
                 ResponseBody killBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
                         fromId, code);
                 //模拟所有玩家用户  //TODO 根据房间号搜索狼人
-                Map<Integer, UserChannel> userChannels = IMChannelGroup.instance().getChannels();
                 userChannels.forEach((userId, chan) -> {
                     if (userId % 2 == 1) {
                         msgGourp.put(killBody, chan);

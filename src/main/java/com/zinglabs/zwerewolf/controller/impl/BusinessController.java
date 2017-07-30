@@ -7,9 +7,11 @@ import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 import com.zinglabs.zwerewolf.entity.RequestBody;
 import com.zinglabs.zwerewolf.entity.ResponseBody;
+import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.im.IMChannelGroup;
 import com.zinglabs.zwerewolf.manager.IMBusinessManager;
 import com.zinglabs.zwerewolf.service.BusinessService;
+import com.zinglabs.zwerewolf.service.UserService;
 import com.zinglabs.zwerewolf.util.ByteBufUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -24,6 +26,8 @@ import java.util.Map;
 public class BusinessController implements BaseController {
     private BusinessService businessService = new BusinessService();
 
+    private UserService userService = new UserService();
+
     @Override
     public void doDestory(Map application) {
 
@@ -35,7 +39,6 @@ public class BusinessController implements BaseController {
         int fromId = requestBody.getFromId();
         int code = requestBody.getCode();
         Map<ResponseBody, UserChannel> msgGourp = new HashMap<>();
-        Map<Integer, UserChannel> channels = IMChannelGroup.instance().getChannels();
         ResponseBody responseBody = null;
 
         switch (commandId) {
@@ -46,7 +49,7 @@ public class BusinessController implements BaseController {
                 Map<String,Object> roomMap = new HashMap<>();
                 roomMap.put("room",creRoom);
                 responseBody.setParam(roomMap);
-                UserChannel userChannel = channels.get(fromId);
+                UserChannel userChannel = userService.getByUserId(fromId);
                 msgGourp.put(responseBody, userChannel);
                 IMBusinessManager.sendRoomMsg(msgGourp);
                 break;
@@ -56,6 +59,17 @@ public class BusinessController implements BaseController {
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_NOT_EXIST);
                 } else if (serRoom.enterRoom(fromId)) {     //房间进入成功
+
+                    //----模拟数据测试用 开始------
+                    Map<Integer,UserRole> roleMap = serRoom.getPlayers();
+                    int start = roleMap.size();
+                    for(int i=start;i<serRoom.getNumber();i++){
+                        int tid = 200+i;
+                        IMChannelGroup.instance().setUserChannel(tid,new UserChannel());
+                        serRoom.enterRoom(tid);
+                    }
+                    //----模拟数据测试用 结束------
+
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_SUCCESS);
                     Map<String, Object> param = new HashMap<>();
@@ -65,7 +79,7 @@ public class BusinessController implements BaseController {
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_ALREADY_FULL);  //房间已满
                 }
-                UserChannel chan = channels.get(fromId);
+                UserChannel chan = userService.getByUserId(fromId);
                 msgGourp.put(responseBody, chan);
                 IMBusinessManager.sendRoomMsg(msgGourp);
                 break;

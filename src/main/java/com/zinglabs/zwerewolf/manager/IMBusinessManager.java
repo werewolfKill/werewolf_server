@@ -21,18 +21,19 @@ public class IMBusinessManager {
 
     /**
      * 转发业务消息，通用方法
+     *
      * @param senders 发送者集合
      */
-    public static void sendGroup(Map<ResponseBody,UserChannel> senders) {
+    public static void sendGroup(Map<ResponseBody, UserChannel> senders) {
 
-        senders.forEach((body,userChannel) -> {
+        senders.forEach((body, userChannel) -> {
 
             Channel toChannel = userChannel.getChannel();
             ByteBuf byteBuf = toChannel.alloc().buffer(8);  //2个int
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
 
-            Packet packet = new Packet(12+byteBuf.readableBytes(),body.getServiceId(),body.getCommand(),byteBuf);
+            Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
             userChannel.getChannel().writeAndFlush(packet);
         });
 
@@ -40,33 +41,34 @@ public class IMBusinessManager {
 
     /**
      * 转发房间信息
+     *
      * @param senders 发送者及发送消息集合
      */
-    public static void sendRoomMsg(Map<ResponseBody,UserChannel> senders){
-        senders.forEach((body,userChannel)->{
+    public static void sendRoomMsg(Map<ResponseBody, UserChannel> senders) {
+        senders.forEach((body, userChannel) -> {
             Channel toChannel = userChannel.getChannel();
             ByteBuf byteBuf = toChannel.alloc().buffer();
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
             Map param = body.getParam();
-            if(param!=null&&param.get("room")!=null){
-                Room room = (Room)param.get("room");
+            if (param != null && param.get("room") != null) {
+                Room room = (Room) param.get("room");
                 byteBuf.writeInt(1);  //标识是否结束
                 byteBuf.writeInt(room.getId());  //房间id
                 byteBuf.writeInt(room.getOwner());
                 byteBuf.writeInt(room.getModalId());
                 byteBuf.writeInt(room.getCurNumber());  //当前人数
-                Map<Integer,UserRole> players = room.getPlayers();
-                if(players!=null&&players.size()>0){
-                    players.forEach((userId,role)->{
+                Map<Integer, UserRole> players = room.getPlayers();
+                if (players != null && players.size() > 0) {
+                    players.forEach((userId, role) -> {
                         byteBuf.writeInt(userId);
                         byteBuf.writeInt(role.getPosition());
                     });
                 }
-            }else{
+            } else {
                 byteBuf.writeInt(0); //标识是否结束
             }
-            Packet packet = new Packet(12+byteBuf.readableBytes(),body.getServiceId(),body.getCommand(),byteBuf);
+            Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
             userChannel.getChannel().writeAndFlush(packet);
 
         });
@@ -75,30 +77,34 @@ public class IMBusinessManager {
 
     /**
      * 转发开场信息
+     *
      * @param senders
      */
-    public static void sendStartMsg(Map<ResponseBody,UserChannel> senders){
-        senders.forEach((body,userChan)->{
+    public static void sendStartMsg(Map<ResponseBody, UserChannel> senders) {
+        senders.forEach((body, userChan) -> {
+            if(userChan==null){
+                return;
+            }
             Channel toChannel = userChan.getChannel();
+            if(toChannel==null){
+                return;
+            }
             ByteBuf byteBuf = toChannel.alloc().buffer();
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
             Map param = body.getParam();
-            if(param!=null&&param.get("wolfs")!=null){
-                List<Integer> wolfs = (List<Integer>)param.get("wolfs");
+            if (param != null && param.get("wolfs") != null) {
+                List<Integer> wolfs = (List<Integer>) param.get("wolfs");
                 byteBuf.writeInt(wolfs.size());
                 wolfs.forEach(byteBuf::writeInt);
-            }else{
+            } else {
                 byteBuf.writeInt(0); //标识是否结束
             }
-            Packet packet = new Packet(12+byteBuf.readableBytes(),body.getServiceId(),body.getCommand(),byteBuf);
-            userChan.getChannel().writeAndFlush(packet);
+            Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
+            toChannel.writeAndFlush(packet);
+
         });
     }
-
-
-
-
 
 
 }

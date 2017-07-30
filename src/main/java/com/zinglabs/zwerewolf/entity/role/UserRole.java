@@ -18,6 +18,19 @@ public class UserRole {
      */
     private int position;
 
+    /**
+     * 是否准备好
+     */
+    private boolean isReady;
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
+
     public int getUserId() {
         return userId;
     }

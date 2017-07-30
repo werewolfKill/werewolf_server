@@ -11,7 +11,7 @@ public class UserRole {
 
     private String userName;
 
-    private Role role;
+    private int roleId;
 
     /**
      * 玩家在房间的位置编号
@@ -34,12 +34,12 @@ public class UserRole {
         this.userName = userName;
     }
 
-    public Role getRole() {
-        return role;
+    public int getRoleId() {
+        return roleId;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
     }
 
     public int getPosition() {

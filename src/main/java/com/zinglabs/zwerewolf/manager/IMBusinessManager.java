@@ -8,6 +8,7 @@ import com.zinglabs.zwerewolf.entity.role.UserRole;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -55,7 +56,7 @@ public class IMBusinessManager {
                 byteBuf.writeInt(room.getOwner());
                 byteBuf.writeInt(room.getModalId());
                 byteBuf.writeInt(room.getCurNumber());  //当前人数
-                Map<Integer,UserRole> players = room.getPeople();
+                Map<Integer,UserRole> players = room.getPlayers();
                 if(players!=null&&players.size()>0){
                     players.forEach((userId,role)->{
                         byteBuf.writeInt(userId);
@@ -70,6 +71,29 @@ public class IMBusinessManager {
 
         });
 
+    }
+
+    /**
+     * 转发开场信息
+     * @param senders
+     */
+    public static void sendStartMsg(Map<ResponseBody,UserChannel> senders){
+        senders.forEach((body,userChan)->{
+            Channel toChannel = userChan.getChannel();
+            ByteBuf byteBuf = toChannel.alloc().buffer();
+            byteBuf.writeInt(body.getFromId());
+            byteBuf.writeInt(body.getReply());
+            Map param = body.getParam();
+            if(param!=null&&param.get("wolfs")!=null){
+                List<Integer> wolfs = (List<Integer>)param.get("wolfs");
+                byteBuf.writeInt(wolfs.size());
+                wolfs.forEach(byteBuf::writeInt);
+            }else{
+                byteBuf.writeInt(0); //标识是否结束
+            }
+            Packet packet = new Packet(12+byteBuf.readableBytes(),body.getServiceId(),body.getCommand(),byteBuf);
+            userChan.getChannel().writeAndFlush(packet);
+        });
     }
 
 

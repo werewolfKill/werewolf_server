@@ -35,7 +35,7 @@ public class Room {
     /**
      * 房间玩家信息
      */
-    private Map<Integer,UserRole> people = new HashMap<>();
+    private Map<Integer,UserRole> players = new HashMap<>();
 
 
     public Room(int id, int modalId, int owner) {
@@ -71,12 +71,12 @@ public class Room {
         this.modalId = modalId;
     }
 
-    public Map<Integer, UserRole> getPeople() {
-        return people;
+    public Map<Integer, UserRole> getPlayers() {
+        return players;
     }
 
-    public void setPeople(Map<Integer, UserRole> people) {
-        this.people = people;
+    public void setPlayers(Map<Integer, UserRole> players) {
+        this.players = players;
     }
 
     public int getOwner() {
@@ -88,21 +88,21 @@ public class Room {
     }
 
     public boolean enterRoom(int userId){
-        if(people.containsKey(userId)){
+        if(players.containsKey(userId)){
             return true;
         }
-        if(people.size()>=this.number){  //房间人数已满
+        if(players.size()>=this.number){  //房间人数已满
             return false;
         }
         UserRole userRole = new UserRole();
-        userRole.setPosition(people.size() + 1);
+        userRole.setPosition(players.size() + 1);
         userRole.setUserId(userId);
-        people.put(userId, userRole);
+        players.put(userId, userRole);
         return true;
     }
 
     public int getCurNumber(){
-        return people.size();
+        return players.size();
     }
 
 

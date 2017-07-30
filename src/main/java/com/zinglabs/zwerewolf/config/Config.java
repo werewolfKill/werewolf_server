@@ -25,9 +25,13 @@ public interface Config {
     int ROLE_CODE_OF_GUARD = 6;  //守卫
     int ROLE_CODE_OF_IDIOT = 7;  //白痴
 
+
+    //游戏流程中状态码
     int ROOM_SEARCH_SUCCESS = 0;  //搜索房间并进入
-    int ROOM_SEARCH_NOT_EXIST = -1;  //搜索房间不存在
-    int ROOM_SEARCH_ALREADY_FULL = -2; //搜索房间已满
+    int ROOM_NOT_EXIST = -1;  //房间不存在
+    int ROOM_ALREADY_FULL = -2; //房间已满
+    int ROOM_NOT_ENOUGH_NUM = -3; //房间人数不够
+
 
 
 

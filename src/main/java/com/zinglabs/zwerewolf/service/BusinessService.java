@@ -52,28 +52,7 @@ public class BusinessService {
      * @return 0表示进入成功，-1表示没有此房间，-2表示此房间已满
      */
     public Room searchAndEnterRoom(int userId, int roomId) {
-//        Room room =
-//        Map<String,Object> retMap = new HashMap<>();
-//        if (room == null) {
-//            retMap.put("code",Config.ROOM_SEARCH_NOT_EXIST);
-//            retMap.put("data",null);
-//            return retMap;
-//        }
-//        Map<Integer, UserRole> people = room.getPeople();
-//
-//        if (people.containsKey(userId)) {
-//            retMap.put(Config.ROOM_SEARCH_SUCCESS,room);
-//            return retMap;
-//        }
-//        int num = people.size();
-//        if (num >= room.getNumber()) {
-//            retMap.put(Config.ROOM_SEARCH_ALREADY_FULL,null);
-//            return retMap;
-//        }
-//
-//
-//        retMap.put(Config.ROOM_SEARCH_SUCCESS,room);
-//        return retMap;
+
         return  globalData.getRoomData().get(roomId);
 
     }

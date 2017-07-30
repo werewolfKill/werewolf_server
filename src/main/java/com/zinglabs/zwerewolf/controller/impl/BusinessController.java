@@ -54,7 +54,7 @@ public class BusinessController implements BaseController {
                 Room serRoom = businessService.searchAndEnterRoom(fromId, code);
                 if (serRoom == null) {                //房间不存在
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
-                            fromId, Config.ROOM_SEARCH_NOT_EXIST);
+                            fromId, Config.ROOM_NOT_EXIST);
                 } else if (serRoom.enterRoom(fromId)) {     //房间进入成功
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_SUCCESS);
@@ -63,7 +63,7 @@ public class BusinessController implements BaseController {
                     responseBody.setParam(param);
                 } else {
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
-                            fromId, Config.ROOM_SEARCH_ALREADY_FULL);  //房间已满
+                            fromId, Config.ROOM_ALREADY_FULL);  //房间已满
                 }
                 UserChannel chan = channels.get(fromId);
                 msgGourp.put(responseBody, chan);

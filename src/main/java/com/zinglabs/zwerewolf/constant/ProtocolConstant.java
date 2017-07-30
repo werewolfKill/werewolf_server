@@ -85,6 +85,8 @@ public interface ProtocolConstant {
     //服务号，表示游戏流程
     short SID_GAME = 4;
 
+
+
     //准备游戏
     short CID_GAME_READY_REQ=1;
 
@@ -97,7 +99,10 @@ public interface ProtocolConstant {
     //开始游戏确认
     short CID_GAME_START_RESP =4;
 
-    //进入天黑（开始游戏）
+    //开始游戏失败
+    short CID_GAME_START_FAIL =-1;
+
+    //天黑
     short CID_GAME_DARK=5;
 
     //天亮

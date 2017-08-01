@@ -28,7 +28,9 @@ public class IMMessageManager {
         Map<Integer, UserChannel> userChannels = IMChannelGroup.instance().getChannels();
         userChannels.forEach((userId,userChannel)->{
         	Channel toChannel = userChannel.getChannel();
-        	
+        	if(toChannel==null){
+        	    return;
+            }
         	byte[] fromName = userChannels.get(fromId).getUsername().getBytes();
         	
         	ByteBuf msg = toChannel.alloc().buffer(contentByte.length + fromName.length + 12);
@@ -64,6 +66,9 @@ public class IMMessageManager {
         userChannels.forEach((userId,userChannel)->{
         	if(userId != fromId){
         		Channel toChannel = userChannel.getChannel();
+                if(toChannel==null){
+                    return;
+                }
         		ByteBuf msg = toChannel.alloc().buffer(audiodata.length + 4);
         		
         		msg.writeInt(audiodata.length);

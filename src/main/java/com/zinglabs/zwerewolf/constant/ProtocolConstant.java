@@ -117,5 +117,28 @@ public interface ProtocolConstant {
     //狼人杀人结果响应
     short CID_GAME_KILL_RES_RESP=9;
 
+    //女巫救人请求
+    short CID_GAME_SAVE_REQ = 10;
+
+    //女巫毒人请求
+    short CID_GAME_POISON_REQ = 11;
+
+    //守卫守卫请求
+    short CID_GAME_GUARD_REQ = 12;
+
+    //预言家验人请求
+    short CID_GAME_VERIFY_REQ = 13;
+
+    //预言家验人响应
+    short CID_GAME_VERIFY_RESP = 14;
+
+
+
+
+
+
+
+
+
 
 }

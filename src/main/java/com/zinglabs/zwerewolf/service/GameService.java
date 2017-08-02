@@ -1,6 +1,7 @@
 package com.zinglabs.zwerewolf.service;
 
 import com.zinglabs.zwerewolf.constant.GlobalData;
+import com.zinglabs.zwerewolf.entity.GameInfo;
 import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
@@ -27,7 +28,7 @@ public class GameService {
      * @param owner  房主
      * @return room
      */
-    public Room checkRoom(int roomId, int owner) {
+    public Room checkAndGetRoom(int roomId, int owner) {
 
         Room room = globalData.getRoomData().get(roomId);
         if (room == null || room.getOwner() != owner) {
@@ -35,6 +36,12 @@ public class GameService {
         }
         return room;
     }
+
+    public GameInfo getGameInfo(int roomId){
+       return globalData.getGameData().get(roomId);
+    }
+
+
 
 
     /**

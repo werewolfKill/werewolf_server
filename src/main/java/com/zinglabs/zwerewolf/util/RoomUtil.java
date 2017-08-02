@@ -2,17 +2,22 @@ package com.zinglabs.zwerewolf.util;
 
 import com.zinglabs.zwerewolf.config.Config;
 import com.zinglabs.zwerewolf.entity.role.Role;
+import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.entity.role.Villager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangtonghe
  * @date 2017/7/29 12:15
  */
 public class RoomUtil {
+
+    private static int i;
+
 
     public static int getNumByModal(int modalId) {
         int number;
@@ -74,6 +79,11 @@ public class RoomUtil {
         }
         return retRoles;
 
+
+    }
+
+    public static boolean verify(int roleId){
+      return roleId!=Config.ROLE_CODE_OF_WOLF;
 
     }
 }

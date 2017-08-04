@@ -15,10 +15,9 @@
 
 ### Simple
 
-PCClient
 
-![PCClient](./image/chat1.png)
+![PCClient](./image/game-1.jpg)
 
-AndroidClient
 
-<img src="./image/chat2.png" width = "300" alt="AndroidClient"/>
+
+![](./imgage/game-2.jpg)

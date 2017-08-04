@@ -20,4 +20,4 @@
 
 
 
-![](./imgage/game-2.jpg)
+![Client](./image/game-2.jpg)

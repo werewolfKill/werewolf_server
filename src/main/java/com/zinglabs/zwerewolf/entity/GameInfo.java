@@ -49,7 +49,7 @@ public class GameInfo {
         if(first==second){
             return 0;
         }else{
-            return first;
+            return killList.get(0).getKey();
         }
     }
 

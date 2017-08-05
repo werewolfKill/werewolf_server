@@ -27,8 +27,13 @@ public class IMBusinessManager {
     public static void sendGroup(Map<ResponseBody, UserChannel> senders) {
 
         senders.forEach((body, userChannel) -> {
-
+            if(userChannel==null){
+                return;
+            }
             Channel toChannel = userChannel.getChannel();
+            if(toChannel==null){
+                return;
+            }
             ByteBuf byteBuf = toChannel.alloc().buffer(8);  //2个int
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
@@ -46,7 +51,13 @@ public class IMBusinessManager {
      */
     public static void sendRoomMsg(Map<ResponseBody, UserChannel> senders) {
         senders.forEach((body, userChannel) -> {
+            if(userChannel==null){
+                return;
+            }
             Channel toChannel = userChannel.getChannel();
+            if(toChannel==null){
+                return;
+            }
             ByteBuf byteBuf = toChannel.alloc().buffer();
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());

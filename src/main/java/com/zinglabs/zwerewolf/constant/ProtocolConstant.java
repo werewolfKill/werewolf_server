@@ -132,6 +132,9 @@ public interface ProtocolConstant {
     //预言家验人响应
     short CID_GAME_VERIFY_RESP = 14;
 
+    //告知女巫狼人杀人信息
+    short CID_GAME_NOTIFY_WITCH_KILLED = 15;
+
 
 
 

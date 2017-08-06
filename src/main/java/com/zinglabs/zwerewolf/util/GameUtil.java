@@ -1,9 +1,7 @@
 package com.zinglabs.zwerewolf.util;
 
 import com.zinglabs.zwerewolf.config.Config;
-import com.zinglabs.zwerewolf.entity.role.Role;
-import com.zinglabs.zwerewolf.entity.role.UserRole;
-import com.zinglabs.zwerewolf.entity.role.Villager;
+import com.zinglabs.zwerewolf.entity.role.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,10 +12,7 @@ import java.util.Map;
  * @author wangtonghe
  * @date 2017/7/29 12:15
  */
-public class RoomUtil {
-
-    private static int i;
-
+public class GameUtil {
 
     public static int getNumByModal(int modalId) {
         int number;
@@ -82,8 +77,81 @@ public class RoomUtil {
 
     }
 
-    public static boolean verify(int roleId){
-      return roleId!=Config.ROLE_CODE_OF_WOLF;
+    public static Role getRole(int roleCode) {
+        Role role = null;
+        switch (roleCode) {
+            case Config.ROLE_CODE_OF_VILLAGER:
+                role = new Villager();
+                break;
+            case Config.ROLE_CODE_OF_GUARD:
+                role = new Guard();
+                break;
 
+            case Config.ROLE_CODE_OF_HUNTSMAN:
+                role = new Huntsman();
+                break;
+
+            case Config.ROLE_CODE_OF_IDIOT:
+                role = new Idiot();
+                break;
+
+            case Config.ROLE_CODE_OF_PROPHET:
+                role = new Prophet();
+                break;
+
+            case Config.ROLE_CODE_OF_WITCH:
+                role = new Witch();
+                break;
+
+            case Config.ROLE_CODE_OF_WOLF:
+                role = new Wolf();
+                break;
+
+        }
+        return role;
+
+    }
+
+    public static Role getRoleFromRoleMap(Map<Integer, UserRole> players, int roleId) {
+        Role role = null;
+        for (UserRole ur : players.values()) {
+            if (ur.getRoleId() == roleId) {
+                role = ur.getRole();
+            }
+        }
+        return role;
+    }
+
+    public static boolean verify(int roleId) {
+        return roleId != Config.ROLE_CODE_OF_WOLF;
+
+    }
+
+    /**
+     * 比较输赢
+     * @param players 玩家礼盒
+     * @return 0表示游戏未结束；1表示好人获胜；-1表示狼人获胜
+     */
+    public static int isGameOver(Map<Integer, UserRole> players) {
+        int isOver = Config.GAME_STATUS_PROCESS;
+        int vill_num =0;
+        int wolf_num =0;
+        int god_num = 0;
+        for(UserRole ur:players.values()){
+            int roleId = ur.getRoleId();
+            if(roleId==Config.ROLE_CODE_OF_WOLF){
+                wolf_num++;
+            }else if(roleId==Config.ROLE_CODE_OF_VILLAGER){
+                vill_num++;
+            }else{
+                god_num++;
+            }
+        }
+        if(wolf_num==0){
+            return Config.GAME_STATUS_OVER_GOOD;
+        }else if(vill_num==0||god_num==0){
+            return Config.GAME_STATUS_OVER_WOLF;
+        }
+        return isOver;
     }
 }

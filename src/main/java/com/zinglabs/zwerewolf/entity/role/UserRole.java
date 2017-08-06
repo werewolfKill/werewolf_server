@@ -13,6 +13,8 @@ public class UserRole {
 
     private int roleId;
 
+    private Role role;
+
     /**
      * 玩家在房间的位置编号
      */
@@ -26,7 +28,7 @@ public class UserRole {
     /**
      * 是否存活
      */
-    private boolean isLive;
+    private boolean isDead;
 
     /**
      * 是否被女巫救
@@ -48,13 +50,12 @@ public class UserRole {
      */
     private boolean isGuarded;
 
-
-    public boolean isLive() {
-        return isLive;
+    public boolean isDead() {
+        return isDead;
     }
 
-    public void setLive(boolean live) {
-        isLive = live;
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public boolean isReady() {
@@ -117,8 +118,8 @@ public class UserRole {
         return isKilled;
     }
 
-    public void setKilled(boolean killed) {
-        isKilled = killed;
+    public void setKilled(boolean isKilled) {
+        this.isKilled = isKilled;
     }
 
     public boolean isGuarded() {
@@ -127,6 +128,14 @@ public class UserRole {
 
     public void setGuarded(boolean guarded) {
         isGuarded = guarded;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override

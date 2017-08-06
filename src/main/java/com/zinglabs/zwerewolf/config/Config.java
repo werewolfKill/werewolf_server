@@ -25,6 +25,12 @@ public interface Config {
     int ROLE_CODE_OF_GUARD = 6;  //守卫
     int ROLE_CODE_OF_IDIOT = 7;  //白痴
 
+//    游戏过程状态码
+    int GAME_STATUS_OVER_WOLF = -1;
+    int GAME_STATUS_OVER_GOOD = 1;
+    int GAME_STATUS_PROCESS= 0;
+
+
 
     //游戏流程中状态码
     int ROOM_SEARCH_SUCCESS = 0;  //搜索房间并进入

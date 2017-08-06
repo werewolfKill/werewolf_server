@@ -1,12 +1,13 @@
 package com.zinglabs.zwerewolf.entity.role;
 
 /**
- * 女巫
  * @author wangtonghe
- * @date 2017/7/24 19:14
+ * @date 2017/8/6 16:46
  */
-public class Warlock implements Role{
-    public static final String NAME = "女巫";
+public class Wolf implements Role {
+
+    private static final String NAME = "狼人";
+
 
     public static String getNAME() {
         return NAME;

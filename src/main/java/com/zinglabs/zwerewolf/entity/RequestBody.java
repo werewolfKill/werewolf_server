@@ -28,6 +28,11 @@ public class RequestBody {
     private int code;
 
     /**
+     * 表示第几天
+     */
+    private int bout;
+
+    /**
      * 消息内容
      */
     private Object content;
@@ -70,5 +75,13 @@ public class RequestBody {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public int getBout() {
+        return bout;
+    }
+
+    public void setBout(int bout) {
+        this.bout = bout;
     }
 }

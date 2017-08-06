@@ -1,6 +1,6 @@
 package com.zinglabs.zwerewolf.constant;
 
-import com.zinglabs.zwerewolf.entity.GameInfo;
+import com.zinglabs.zwerewolf.entity.WolfInfo;
 import com.zinglabs.zwerewolf.entity.Room;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class GlobalData {
 
     private  Map<Integer,Room> roomData = new HashMap<>();
 
-    private Map<Integer,GameInfo> gameData = new HashMap<>();
+    private Map<Integer,WolfInfo> gameData = new HashMap<>();
 
     public static GlobalData getInstance(){
         if(instance==null){
@@ -39,11 +39,11 @@ public class GlobalData {
         roomData.put(integer,room);
     }
 
-    public Map<Integer, GameInfo> getGameData() {
+    public Map<Integer, WolfInfo> getGameData() {
         return gameData;
     }
 
-    public void setGameData(Map<Integer, GameInfo> gameData) {
+    public void setGameData(Map<Integer, WolfInfo> gameData) {
         this.gameData = gameData;
     }
 }

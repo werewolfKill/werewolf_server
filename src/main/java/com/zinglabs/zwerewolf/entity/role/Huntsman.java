@@ -5,7 +5,7 @@ package com.zinglabs.zwerewolf.entity.role;
  * @author wangtonghe
  * @date 2017/7/24 18:44
  */
-public class Hunter implements Role {
+public class Huntsman implements Role {
 
     private static final String NAME = "猎人";
 

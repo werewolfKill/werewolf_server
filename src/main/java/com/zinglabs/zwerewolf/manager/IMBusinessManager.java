@@ -89,7 +89,7 @@ public class IMBusinessManager {
     /**
      * 转发开场信息
      *
-     * @param senders
+     * @param senders 发送者集合
      */
     public static void sendStartMsg(Map<ResponseBody, UserChannel> senders) {
         senders.forEach((body, userChan) -> {
@@ -110,6 +110,35 @@ public class IMBusinessManager {
                 wolfs.forEach(byteBuf::writeInt);
             } else {
                 byteBuf.writeInt(0); //标识是否结束
+            }
+            Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
+            toChannel.writeAndFlush(packet);
+
+        });
+    }
+
+    /**
+     * 转发天亮信息
+     *
+     * @param senders 发送者集合
+     */
+    public static void sendDawnMsg(Map<ResponseBody, UserChannel> senders) {
+        senders.forEach((body, userChan) -> {
+            if(userChan==null){
+                return;
+            }
+            Channel toChannel = userChan.getChannel();
+            if(toChannel==null){
+                return;
+            }
+            ByteBuf byteBuf = toChannel.alloc().buffer();
+            byteBuf.writeInt(body.getFromId());
+            byteBuf.writeInt(body.getReply());
+            Map<String,Object> param = body.getParam();
+            if(param!=null&&param.get("killed")!=null){
+                List<Integer> killed = (List<Integer>) param.get("killed");
+                byteBuf.writeInt(killed.size());
+                killed.forEach(byteBuf::writeInt);
             }
             Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
             toChannel.writeAndFlush(packet);

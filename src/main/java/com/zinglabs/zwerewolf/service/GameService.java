@@ -1,12 +1,10 @@
 package com.zinglabs.zwerewolf.service;
 
 import com.zinglabs.zwerewolf.constant.GlobalData;
-import com.zinglabs.zwerewolf.entity.GameInfo;
+import com.zinglabs.zwerewolf.entity.WolfInfo;
 import com.zinglabs.zwerewolf.entity.Room;
-import com.zinglabs.zwerewolf.entity.UserChannel;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
-import com.zinglabs.zwerewolf.im.IMChannelGroup;
-import com.zinglabs.zwerewolf.util.RoomUtil;
+import com.zinglabs.zwerewolf.util.GameUtil;
 
 import java.util.List;
 import java.util.Map;
@@ -36,8 +34,22 @@ public class GameService {
         }
         return room;
     }
+    /**
+     * 检查并获取房间
+     *
+     * @param roomId 房间号
+     * @return room
+     */
+    public Room checkAndGetRoom(int roomId) {
 
-    public GameInfo getGameInfo(int roomId){
+        Room room = globalData.getRoomData().get(roomId);
+        if (room == null ) {
+            return null;
+        }
+        return room;
+    }
+
+    public WolfInfo getGameInfo(int roomId){
        return globalData.getGameData().get(roomId);
     }
 
@@ -53,11 +65,12 @@ public class GameService {
     public Map<Integer, UserRole> allotRoles(Room room) {
         Map<Integer, UserRole> userRoleMap = room.getPlayers();
         int modalId = room.getModalId();
-        List<Integer> roleList = RoomUtil.getRolesByModalId(modalId);
+        List<Integer> roleList = GameUtil.getRolesByModalId(modalId);
 
         userRoleMap.forEach((userId, ur) -> {
             int rom_roleId = new Random().nextInt(roleList.size());
             ur.setRoleId(roleList.get(rom_roleId));
+            ur.setRole(GameUtil.getRole(rom_roleId));
             roleList.remove(rom_roleId);
         });
         return userRoleMap;

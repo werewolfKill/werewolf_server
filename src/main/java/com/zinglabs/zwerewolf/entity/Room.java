@@ -1,7 +1,7 @@
 package com.zinglabs.zwerewolf.entity;
 
 import com.zinglabs.zwerewolf.entity.role.UserRole;
-import com.zinglabs.zwerewolf.util.RoomUtil;
+import com.zinglabs.zwerewolf.util.GameUtil;
 
 import java.util.*;
 
@@ -37,14 +37,44 @@ public class Room {
      */
     private Map<Integer,UserRole> players = new HashMap<>();
 
+    /**
+     * 游戏信息
+     */
+    private Map<Integer,GameInfo> gameInfoMap = new HashMap<>();
+
+    /**
+     * 表示第几天
+     */
+    private int bout;
+
+    /**
+     * 狼人杀人列表
+     */
+    private List<Integer> killLIst = new ArrayList<>();
+
+    public List<Integer> getKillLIst() {
+        return killLIst;
+    }
+
+    public void addKilled(int userId) {
+        killLIst.add(userId);
+    }
+
 
     public Room(int id, int modalId, int owner) {
         this.id = id;
         this.modalId = modalId;
-        this.number =  RoomUtil.getNumByModal(modalId);
+        this.number =  GameUtil.getNumByModal(modalId);
         this.owner = owner;
     }
 
+    public int getBout() {
+        return bout;
+    }
+
+    public void setBout(int bout) {
+        this.bout = bout;
+    }
 
     public int getId() {
         return id;
@@ -67,7 +97,7 @@ public class Room {
     }
 
     public void setModalId(int modalId) {
-        this.number =  RoomUtil.getNumByModal(modalId);
+        this.number =  GameUtil.getNumByModal(modalId);
         this.modalId = modalId;
     }
 
@@ -106,9 +136,11 @@ public class Room {
     }
 
 
+    public Map<Integer, GameInfo> getGameInfoMap() {
+        return gameInfoMap;
+    }
 
-
-
-
-
+    public void setGameInfoMap(Map<Integer, GameInfo> gameInfoMap) {
+        this.gameInfoMap = gameInfoMap;
+    }
 }

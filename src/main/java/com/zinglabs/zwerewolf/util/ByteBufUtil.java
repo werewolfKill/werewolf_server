@@ -21,10 +21,12 @@ public class ByteBufUtil {
         int fromId = body.readInt();
         int roomId = body.readInt();
         int order = body.readInt();
+        int bout = body.readInt();
         RequestBody msgBody = new RequestBody();
         msgBody.setCode(order);
         msgBody.setFromId(fromId);
         msgBody.setRoomId(roomId);
+        msgBody.setBout(bout);
         return msgBody;
     }
 

@@ -135,6 +135,9 @@ public interface ProtocolConstant {
     //告知女巫狼人杀人信息
     short CID_GAME_NOTIFY_WITCH_KILLED = 15;
 
+    //计时时间到，即请求天亮
+    short CID_GAME_TIMER_OVER = 16;
+
 
 
 

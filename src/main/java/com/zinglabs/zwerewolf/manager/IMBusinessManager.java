@@ -24,9 +24,9 @@ public class IMBusinessManager {
      *
      * @param senders 发送者集合
      */
-    public static void sendGroup(Map<ResponseBody, UserChannel> senders) {
+    public static void sendGroup(Map<UserChannel,ResponseBody> senders) {
 
-        senders.forEach((body, userChannel) -> {
+        senders.forEach((userChannel,body) -> {
             if(userChannel==null){
                 return;
             }
@@ -91,8 +91,8 @@ public class IMBusinessManager {
      *
      * @param senders 发送者集合
      */
-    public static void sendStartMsg(Map<ResponseBody, UserChannel> senders) {
-        senders.forEach((body, userChan) -> {
+    public static void sendStartMsg(Map<UserChannel,ResponseBody> senders) {
+        senders.forEach((userChan,body) -> {
             if(userChan==null){
                 return;
             }
@@ -122,8 +122,8 @@ public class IMBusinessManager {
      *
      * @param senders 发送者集合
      */
-    public static void sendDawnMsg(Map<ResponseBody, UserChannel> senders) {
-        senders.forEach((body, userChan) -> {
+    public static void sendDawnMsg(Map<UserChannel,ResponseBody> senders) {
+        senders.forEach((userChan,body) -> {
             if(userChan==null){
                 return;
             }

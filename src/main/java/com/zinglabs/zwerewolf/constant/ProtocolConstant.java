@@ -138,6 +138,36 @@ public interface ProtocolConstant {
     //计时时间到，即请求天亮
     short CID_GAME_TIMER_OVER = 16;
 
+    //请求竞选警长
+    short CID_GAME_ASK_CHIEF = 17;
+
+    //请求竞选警长响应
+    short CID_GAME_ASK_CHIEF_RESP = 18;
+
+    //警上发言
+    short CID_GAME_POLICE_SPEAKING = 19;
+
+    //取消竞选警长
+    short CID_GAME_QUIT_POLICE_RESP = 20;
+
+
+    //取消竞选警长响应
+    short CID_GAME_QUIT_POLICE = 21;
+
+    //竞选警长投票
+    short CID_GAME_CHIEF_VOTE = 22;
+
+    //竞选警长投票响应
+    short CID_GAME_CHIEF_VOTE_RESP = 23;
+
+    //投票出人请求
+    short CID_GAME_VOTE = 24;
+
+    //投票出人响应
+    short CID_GAME_VOTE_RESP = 25;
+
+
+
 
 
 

@@ -61,13 +61,13 @@ public class GameUtil {
                 break;
             case Config.MODEL_12_YNLB:
                 roles.add(Config.ROLE_CODE_OF_VILLAGER);
-                roles.add(Config.ROLE_CODE_OF_GUARD);
+                roles.add(Config.ROLE_CODE_OF_IDIOT);
                 roles.add(Config.ROLE_CODE_OF_WOLF);
                 retRoles = roles;
                 break;
             case Config.MODEL_12_YNLS:
                 roles.add(Config.ROLE_CODE_OF_VILLAGER);
-                roles.add(Config.ROLE_CODE_OF_IDIOT);
+                roles.add(Config.ROLE_CODE_OF_GUARD);
                 roles.add(Config.ROLE_CODE_OF_WOLF);
                 retRoles = roles;
                 break;
@@ -129,7 +129,7 @@ public class GameUtil {
 
     /**
      * 比较输赢
-     * @param players 玩家礼盒
+     * @param players 玩家集合
      * @return 0表示游戏未结束；1表示好人获胜；-1表示狼人获胜
      */
     public static int isGameOver(Map<Integer, UserRole> players) {

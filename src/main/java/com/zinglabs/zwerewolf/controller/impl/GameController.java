@@ -45,11 +45,11 @@ public class GameController implements BaseController {
         int roomId = requestBody.getRoomId();
         int code = requestBody.getCode();
         int bout = requestBody.getBout();
-        Map<ResponseBody, UserChannel> msgGourp = new HashMap<>();
+        Map<UserChannel,ResponseBody> msgGourp = new HashMap<>();
         Map<Integer, UserChannel> roomChannels = userService.getByRoomId(roomId);
 
         Room room = null;
-        WolfInfo wolfInfo;
+        GameInfo gameInfo;
         ResponseBody responseBody;
         UserChannel userChannel;
 
@@ -58,7 +58,7 @@ public class GameController implements BaseController {
                 int ready = gameService.readyGame(fromId, roomId);
                 ResponseBody readyBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_READY_RESP,
                         fromId, ready);
-                roomChannels.forEach((id, chan) -> msgGourp.put(readyBody, chan));
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan,readyBody));
                 IMBusinessManager.sendGroup(msgGourp);
                 break;
             case ProtocolConstant.CID_GAME_START_REQ: //开始游戏
@@ -67,14 +67,15 @@ public class GameController implements BaseController {
                     responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_FAIL,
                             fromId, Config.ROOM_NOT_EXIST);
                     userChannel = roomChannels.get(fromId);
-                    msgGourp.put(responseBody, userChannel);
+                    msgGourp.put(userChannel,responseBody);
                 } else if (room.getCurNumber() < room.getNumber()) {   //人数不够
                     responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_FAIL,
                             fromId, Config.ROOM_NOT_ENOUGH_NUM);
                     userChannel = roomChannels.get(fromId);
-                    msgGourp.put(responseBody, userChannel);
+                    msgGourp.put(userChannel,responseBody);
                 } else {                      //开始游戏
                     Map<Integer, UserRole> roleMap = gameService.allotRoles(room);
+                    room.getGameInfoMap().put(1,new NightInfo());
                     List<Integer> wolfs = new ArrayList<>();
                     roleMap.forEach((id, ur) -> {
                         if (ur.getRoleId() == Config.ROLE_CODE_OF_WOLF) {
@@ -90,7 +91,7 @@ public class GameController implements BaseController {
                         if (ur.getRoleId() == Config.ROLE_CODE_OF_WOLF) {
                             resBody.setParam(param);
                         }
-                        msgGourp.put(resBody, uchan);
+                        msgGourp.put(uchan,resBody);
                     });
                 }
                 IMBusinessManager.sendStartMsg(msgGourp);
@@ -100,20 +101,20 @@ public class GameController implements BaseController {
                 if (room == null) {
                     return;
                 }
-                wolfInfo = gameService.getGameInfo(roomId);
-                if (wolfInfo == null) {
-                    wolfInfo = new WolfInfo();
+                gameInfo = gameService.getGameInfo(roomId);
+                if (gameInfo == null) {
+                    gameInfo = new GameInfo();
                 }
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
                         fromId, code);  //code表示要杀的人的id
-                wolfInfo.putKillInfo(code);
+                gameInfo.putKillInfo(code);
                 Map<Integer, UserChannel> wolfChannel = getWolfs(roomChannels, room.getPlayers());
-                wolfChannel.forEach((id, chan) -> msgGourp.put(responseBody, chan));
+                wolfChannel.forEach((id, chan) -> msgGourp.put(chan,responseBody));
                 IMBusinessManager.sendGroup(msgGourp);  //告知同伴自己击杀的人
                 int wolfSize = wolfChannel.size();
 
-                if (wolfSize == wolfInfo.getKillNumber() || wolfInfo.getKillNumber() == 1 /* 测试*/) {
-                    int killed = wolfInfo.getKilled();  //得到被杀的人
+                if (wolfSize == gameInfo.getKillNumber() || gameInfo.getKillNumber() == 1 /* 测试*/) {
+                    int killed = gameInfo.getKilled();  //得到被杀的人
                     room.getGameInfoMap().get(bout).setKillId(code);
                     room.addKilled(killed);
 
@@ -126,7 +127,7 @@ public class GameController implements BaseController {
                             0, killed);
                     Map<Integer, UserChannel> witchChannel = getRoleMapById(roomChannels, room.getPlayers(), Config.ROLE_CODE_OF_WITCH);
                     msgGourp.clear();
-                    witchChannel.forEach((id, chan) -> msgGourp.put(killBody, chan));
+                    witchChannel.forEach((id, chan) -> msgGourp.put(chan,killBody));
                     IMBusinessManager.sendGroup(msgGourp);
                 }
                 break;
@@ -146,7 +147,7 @@ public class GameController implements BaseController {
                 }
                 room.getGameInfoMap().get(bout).setPoisonId(code);
                 Witch pwitch = (Witch) room.getPlayers().get(fromId).getRole();
-                pwitch.setSaveId(code);
+                pwitch.setPoisonId(code);
                 break;
             case ProtocolConstant.CID_GAME_VERIFY_REQ:  //预言家验人
                 room = gameService.checkAndGetRoom(roomId);
@@ -159,9 +160,9 @@ public class GameController implements BaseController {
                 prophet.setVerifyMap(code, isGood);
                 int isGoodReply = isGood ? 1 : 0;
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_VERIFY_RESP,
-                        fromId, isGoodReply);
+                        code, isGoodReply);
                 userChannel = roomChannels.get(fromId);
-                msgGourp.put(responseBody, userChannel);
+                msgGourp.put(userChannel,responseBody);
                 IMBusinessManager.sendGroup(msgGourp);
                 break;
             case ProtocolConstant.CID_GAME_GUARD_REQ:   //守卫守人
@@ -183,14 +184,56 @@ public class GameController implements BaseController {
                 Map<String, Object> param = new HashMap<>();
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_DAWN,
                         0, over);
-                if(deadList.size()>0){
+                if (deadList.size() > 0) {
                     param.put("killed", deadList);
                     responseBody.setParam(param);
                 }
-                roomChannels.forEach((id, chan) -> msgGourp.put(responseBody, chan));
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan,responseBody));
                 IMBusinessManager.sendDawnMsg(msgGourp);
                 break;
+            case ProtocolConstant.CID_GAME_ASK_CHIEF: //请求竞选警长
+                room = gameService.checkAndGetRoom(roomId);
+                if (room == null) {
+                    return;
+                }
+                gameInfo = gameService.getGameInfo(roomId);
+                if (gameInfo == null) {
+                    gameInfo = new GameInfo();
+                }
 
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_ASK_CHIEF_RESP,
+                        fromId, fromId);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan,responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                if (gameInfo.getVotePoliceNum() > 8) {   //测试
+                    int rid = gameInfo.getChiefVotes().get(0);  //随机选取一人
+                    ResponseBody voteBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_POLICE_SPEAKING,
+                            fromId, rid);
+                    roomChannels.forEach((id, chan) -> msgGourp.put(chan,voteBody));
+                    IMBusinessManager.sendGroup(msgGourp);
+                }
+                break;
+            case ProtocolConstant.CID_GAME_QUIT_POLICE : //取消竞选警长
+                room = gameService.checkAndGetRoom(roomId);
+                if (room == null) {
+                    return;
+                }
+                gameInfo = gameService.getGameInfo(roomId);
+                if (gameInfo == null) {
+                    gameInfo = new GameInfo();
+                }
+                gameInfo.addQuitChiefs(fromId);
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_QUIT_POLICE_RESP,
+                        fromId, fromId);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan,responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                break;
+            case ProtocolConstant.CID_GAME_CHIEF_VOTE:  //警上投票
+                room = gameService.checkAndGetRoom(roomId);
+                if (room == null) {
+                    return;
+                }
+                
 
         }
 

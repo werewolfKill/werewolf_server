@@ -1,65 +1,92 @@
 package com.zinglabs.zwerewolf.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
+ * 游戏信息
+ *
  * @author wangtonghe
- * @date 2017/8/6 19:02
+ * @date 2017/8/2 08:08
  */
 public class GameInfo {
 
 
 
-    private int killId;
+    private Map<Integer, Integer> killInfo = new HashMap<>();
 
-    private int guardianId;
 
-    private int saveId;
+    /**
+     * 警长投票列表
+     */
+    private List<Integer> voteChiefs = new ArrayList<>();
 
-    private int poisonId;
+    private List<Integer> quitChiefs = new ArrayList<>();
 
-    public int getKillId() {
-        return killId;
+    public List<Integer> getQuitChiefs() {
+        return quitChiefs;
     }
 
-    public void setKillId(int killId) {
-        this.killId = killId;
+    public void addQuitChiefs(Integer userId) {
+        this.quitChiefs.add(userId);
     }
 
-    public int getGuardianId() {
-        return guardianId;
+    public List<Integer> getChiefVotes() {
+        return voteChiefs;
     }
 
-    public void setGuardianId(int guardianId) {
-        this.guardianId = guardianId;
+    public void addChiefVotes(Integer voteId) {
+        this.voteChiefs.add(voteId);
+    }
+    public void quitChiefVotes(Integer voteId) {
+        this.voteChiefs.remove(voteId);
     }
 
-    public int getSaveId() {
-        return saveId;
+    public int getVotePoliceNum(){
+        return voteChiefs.size();
     }
 
-    public void setSaveId(int saveId) {
-        this.saveId = saveId;
-    }
 
-    public int getPoisonId() {
-        return poisonId;
-    }
-
-    public void setPoisonId(int poisonId) {
-        this.poisonId = poisonId;
-    }
-
-    public List<Integer> getDeadList(){
-        List<Integer> list = new ArrayList<>(2);
-        if(killId!=saveId&&killId!=guardianId||killId==saveId&&killId==guardianId){
-            list.add(killId);
+    /**
+     * 添加杀人信息
+     * @param userId 用户id
+     */
+    public void putKillInfo(int userId) {
+        Integer num = killInfo.putIfAbsent(userId, 1);
+        if(num!=null){
+            killInfo.put(userId,num+1);
         }
-        if(poisonId>0){
-            list.add(poisonId);
+    }
+
+    /**
+     * 获取目前几个狼人已发送杀人请求
+     */
+    public int getKillNumber(){
+        return killInfo.size();
+
+    }
+
+
+    /**
+     * 返回狼人杀人信息
+     *
+     * @return 0为意见持平，其他为玩家id
+     */
+    public int getKilled(){
+        List<Map.Entry<Integer,Integer>> killList = new ArrayList<>(killInfo.entrySet());
+        Collections.sort(killList,(o1,o2)->o2.getValue().compareTo(o1.getValue()));
+        int first = killList.get(0).getValue();
+        if(killList.size()==1){
+            return killList.get(0).getKey();
         }
-        return list;
+        int second = killList.get(1).getValue();
+        if(first==second){
+            killInfo.clear();
+            return 0;
+        }else{
+            int code = killList.get(0).getValue();
+            killInfo.clear();
+            return  code;
+        }
     }
 
 }

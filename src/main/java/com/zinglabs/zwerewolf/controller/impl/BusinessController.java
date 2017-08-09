@@ -59,17 +59,6 @@ public class BusinessController implements BaseController {
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_NOT_EXIST);
                 } else if (serRoom.enterRoom(fromId)) {     //房间进入成功
-
-                    //----模拟数据测试用 开始------
-                    Map<Integer,UserRole> roleMap = serRoom.getPlayers();
-                    int start = roleMap.size();
-                    for(int i=start;i<serRoom.getNumber();i++){
-                        int tid = 200+i;
-                        IMChannelGroup.instance().setUserChannel(tid,new UserChannel());
-                        serRoom.enterRoom(tid);
-                    }
-                    //----模拟数据测试用 结束------
-
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_SEARCH_SUCCESS);
                     Map<String, Object> param = new HashMap<>();

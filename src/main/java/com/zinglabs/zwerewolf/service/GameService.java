@@ -1,7 +1,8 @@
 package com.zinglabs.zwerewolf.service;
 
+import com.zinglabs.zwerewolf.config.Config;
 import com.zinglabs.zwerewolf.constant.GlobalData;
-import com.zinglabs.zwerewolf.entity.WolfInfo;
+import com.zinglabs.zwerewolf.entity.GameInfo;
 import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.util.GameUtil;
@@ -49,7 +50,7 @@ public class GameService {
         return room;
     }
 
-    public WolfInfo getGameInfo(int roomId){
+    public GameInfo getGameInfo(int roomId){
        return globalData.getGameData().get(roomId);
     }
 
@@ -70,9 +71,22 @@ public class GameService {
         userRoleMap.forEach((userId, ur) -> {
             int rom_roleId = new Random().nextInt(roleList.size());
             ur.setRoleId(roleList.get(rom_roleId));
-            ur.setRole(GameUtil.getRole(rom_roleId));
+            ur.setRole(GameUtil.getRole(ur.getRoleId()));
+
+            //测试
+            if(userId==102){
+                ur.setRoleId(Config.ROLE_CODE_OF_WOLF);
+                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+            }
+            if(userId==101){
+                ur.setRoleId(Config.ROLE_CODE_OF_WITCH);
+                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+            }
+
             roleList.remove(rom_roleId);
         });
+
+//        userRoleMap.put()
         return userRoleMap;
 
     }

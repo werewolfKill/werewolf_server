@@ -20,8 +20,8 @@ public class ByteBufUtil {
     public static RequestBody resolveGame(ByteBuf body) {
         int fromId = body.readInt();
         int roomId = body.readInt();
-        int order = body.readInt();
         int bout = body.readInt();
+        int order = body.readInt();
         RequestBody msgBody = new RequestBody();
         msgBody.setCode(order);
         msgBody.setFromId(fromId);

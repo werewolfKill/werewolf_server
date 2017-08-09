@@ -60,4 +60,22 @@ public class UserChannel {
     public void setChannel(Channel channel) {
         this.channel = channel;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserChannel that = (UserChannel) o;
+
+        if (userId != that.userId) return false;
+        return channel != null ? channel.equals(that.channel) : that.channel == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userId;
+        result = 31 * result + (channel != null ? channel.hashCode() : 0);
+        return result;
+    }
 }

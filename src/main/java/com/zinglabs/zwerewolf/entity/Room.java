@@ -33,6 +33,13 @@ public class Room {
     private int owner;
 
     /**
+     * 警长id
+     */
+    private int chiefId;
+
+
+
+    /**
      * 房间玩家信息
      */
     private Map<Integer,UserRole> players = new HashMap<>();
@@ -40,7 +47,7 @@ public class Room {
     /**
      * 游戏信息
      */
-    private Map<Integer,GameInfo> gameInfoMap = new HashMap<>();
+    private Map<Integer,NightInfo> gameInfoMap = new HashMap<>();
 
     /**
      * 表示第几天
@@ -136,11 +143,21 @@ public class Room {
     }
 
 
-    public Map<Integer, GameInfo> getGameInfoMap() {
+    public Map<Integer, NightInfo> getGameInfoMap() {
         return gameInfoMap;
     }
 
-    public void setGameInfoMap(Map<Integer, GameInfo> gameInfoMap) {
+    public int getChiefId() {
+        return chiefId;
+    }
+
+    public void setChiefId(int chiefId) {
+        this.chiefId = chiefId;
+    }
+
+
+
+    public void setGameInfoMap(Map<Integer, NightInfo> gameInfoMap) {
         this.gameInfoMap = gameInfoMap;
     }
 }

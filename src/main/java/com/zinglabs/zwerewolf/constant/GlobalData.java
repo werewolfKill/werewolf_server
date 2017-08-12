@@ -43,7 +43,7 @@ public class GlobalData {
         return gameData;
     }
 
-    public void setGameData(Map<Integer, GameInfo> gameData) {
-        this.gameData = gameData;
+    public void putGameData(int roomId,GameInfo gameInfo) {
+        this.gameData.put(roomId,gameInfo);
     }
 }

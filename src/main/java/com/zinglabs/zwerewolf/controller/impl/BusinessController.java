@@ -38,7 +38,7 @@ public class BusinessController implements BaseController {
         RequestBody requestBody = ByteBufUtil.resolveBusiness(body);
         int fromId = requestBody.getFromId();
         int code = requestBody.getCode();
-        Map<ResponseBody, UserChannel> msgGourp = new HashMap<>();
+        Map<UserChannel, ResponseBody> msgGourp = new HashMap<>();
         ResponseBody responseBody = null;
 
         switch (commandId) {
@@ -46,30 +46,45 @@ public class BusinessController implements BaseController {
                 Room creRoom = businessService.createRoom(fromId, code);
                 responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_CRE_ROOM_RESP,
                         fromId, creRoom.getId());
-                Map<String,Object> roomMap = new HashMap<>();
-                roomMap.put("room",creRoom);
+                Map<String, Object> roomMap = new HashMap<>();
+                roomMap.put("room", creRoom);
                 responseBody.setParam(roomMap);
                 UserChannel userChannel = userService.getByUserId(fromId);
-                msgGourp.put(responseBody, userChannel);
+                msgGourp.put(userChannel, responseBody);
                 IMBusinessManager.sendRoomMsg(msgGourp);
                 break;
             case ProtocolConstant.CID_BNS_FIND_ROOM_REQ:  //搜索房间并进入，code为要搜索的房间号
-                Room serRoom = businessService.searchAndEnterRoom(fromId, code);
+                Room serRoom = businessService.searchRoom(fromId, code);
                 if (serRoom == null) {                //房间不存在
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_NOT_EXIST);
-                } else if (serRoom.enterRoom(fromId)) {     //房间进入成功
-                    responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
-                            fromId, Config.ROOM_SEARCH_SUCCESS);
+                    UserChannel chan = userService.getByUserId(fromId);
+                    msgGourp.put(chan, responseBody);
+
+                } else if (serRoom.enterRoom(fromId)) {     //房间进入成功,通知房间所有人
+                    int position = serRoom.getPlayers().get(fromId).getPosition();
+                    ResponseBody enterBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
+                            fromId, Config.ROOM_SEARCH_SUCCESS);  //对自己响应，进入房间
+                    ResponseBody otherBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_OTHER_ENTER,
+                            fromId, position);  // 对其他人，有人进入房间
                     Map<String, Object> param = new HashMap<>();
                     param.put("room", serRoom);
-                    responseBody.setParam(param);
+                    enterBody.setParam(param);
+//                    otherBody.
+                    Map<Integer, UserChannel> roomChannels = userService.getByRoomId(code);
+                    roomChannels.forEach((id, chan) -> {
+                        if (id == fromId) {
+                            msgGourp.put(chan, enterBody);
+                        } else {
+                            msgGourp.put(chan, otherBody);
+                        }
+                    });
                 } else {
                     responseBody = new ResponseBody(ProtocolConstant.SID_BNS, ProtocolConstant.CID_BNS_FIND_ROOM_RESP,
                             fromId, Config.ROOM_ALREADY_FULL);  //房间已满
+                    UserChannel chan = userService.getByUserId(fromId);
+                    msgGourp.put(chan, responseBody);
                 }
-                UserChannel chan = userService.getByUserId(fromId);
-                msgGourp.put(responseBody, chan);
                 IMBusinessManager.sendRoomMsg(msgGourp);
                 break;
         }

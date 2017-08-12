@@ -66,10 +66,10 @@ public interface ProtocolConstant {
     //创建房间响应
     short CID_BNS_CRE_ROOM_RESP=2;
 
-    //随机进入房间请求
+    //进入房间请求
     short CID_BNS_ENTER_ROOM_REQ =3;
 
-    //随机进入房间响应
+    //进入房间响应
     short CID_BNS_ENTER_ROOM_RESP =4;
 
     //搜索房间请求
@@ -77,6 +77,7 @@ public interface ProtocolConstant {
 
     //搜索房间响应
     short CID_BNS_FIND_ROOM_RESP=6;
+
 
 
     /**
@@ -165,6 +166,9 @@ public interface ProtocolConstant {
 
     //投票出人响应
     short CID_GAME_VOTE_RESP = 25;
+
+    //他人进入房间
+    short CID_GAME_OTHER_ENTER =26;
 
 
 

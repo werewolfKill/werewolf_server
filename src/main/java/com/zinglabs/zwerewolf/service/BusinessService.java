@@ -2,6 +2,7 @@ package com.zinglabs.zwerewolf.service;
 
 import com.zinglabs.zwerewolf.config.Config;
 import com.zinglabs.zwerewolf.constant.GlobalData;
+import com.zinglabs.zwerewolf.entity.GameInfo;
 import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.UserChannel;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
@@ -50,6 +51,7 @@ public class BusinessService {
         }
         //----模拟数据测试用 结束------
         globalData.putRoomData(room_Id, room);
+        globalData.putGameData(room_Id,new GameInfo());
         return room;
     }
 
@@ -61,7 +63,7 @@ public class BusinessService {
      * @param roomId 房间号
      * @return 0表示进入成功，-1表示没有此房间，-2表示此房间已满
      */
-    public Room searchAndEnterRoom(int userId, int roomId) {
+    public Room searchRoom(int userId, int roomId) {
 
         return  globalData.getRoomData().get(roomId);
 

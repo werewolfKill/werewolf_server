@@ -49,8 +49,8 @@ public class IMBusinessManager {
      *
      * @param senders 发送者及发送消息集合
      */
-    public static void sendRoomMsg(Map<ResponseBody, UserChannel> senders) {
-        senders.forEach((body, userChannel) -> {
+    public static void sendRoomMsg(Map<UserChannel,ResponseBody> senders) {
+        senders.forEach((userChannel,body) -> {
             if(userChannel==null){
                 return;
             }
@@ -135,10 +135,14 @@ public class IMBusinessManager {
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
             Map<String,Object> param = body.getParam();
-            if(param!=null&&param.get("killed")!=null){
+            int bout = (Integer) param.get("bout");
+            byteBuf.writeInt(bout);
+            if(param.get("killed")!=null){
                 List<Integer> killed = (List<Integer>) param.get("killed");
                 byteBuf.writeInt(killed.size());
                 killed.forEach(byteBuf::writeInt);
+            }else{
+                byteBuf.writeInt(0);  //平安夜
             }
             Packet packet = new Packet(12 + byteBuf.readableBytes(), body.getServiceId(), body.getCommand(), byteBuf);
             toChannel.writeAndFlush(packet);

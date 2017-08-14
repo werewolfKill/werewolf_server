@@ -86,7 +86,8 @@ public interface ProtocolConstant {
     //服务号，表示游戏流程
     short SID_GAME = 4;
 
-
+    //开始游戏失败
+    short CID_GAME_START_FAIL =-1;
 
     //准备游戏
     short CID_GAME_READY_REQ=1;
@@ -100,75 +101,82 @@ public interface ProtocolConstant {
     //开始游戏确认
     short CID_GAME_START_RESP =4;
 
-    //开始游戏失败
-    short CID_GAME_START_FAIL =-1;
+    //他人进入房间
+    short CID_GAME_OTHER_ENTER =5;
 
     //天黑
-    short CID_GAME_DARK=5;
+    short CID_GAME_DARK=6;
 
     //天亮
-    short CID_GAME_DAWN=6;
+    short CID_GAME_DAWN=7;
 
     //狼人杀人请求
-    short CID_GAME_KILL_REQ=7;
+    short CID_GAME_KILL_REQ=8;
 
     //狼人杀人响应
-    short CID_GAME_KILL_RESP=8;
+    short CID_GAME_KILL_RESP=9;
 
     //狼人杀人结果响应
-    short CID_GAME_KILL_RES_RESP=9;
+    short CID_GAME_KILL_RES_RESP=10;
 
     //女巫救人请求
-    short CID_GAME_SAVE_REQ = 10;
+    short CID_GAME_SAVE_REQ = 11;
 
     //女巫毒人请求
-    short CID_GAME_POISON_REQ = 11;
+    short CID_GAME_POISON_REQ = 12;
 
     //守卫守卫请求
-    short CID_GAME_GUARD_REQ = 12;
+    short CID_GAME_GUARD_REQ = 13;
 
     //预言家验人请求
-    short CID_GAME_VERIFY_REQ = 13;
+    short CID_GAME_VERIFY_REQ = 14;
 
     //预言家验人响应
-    short CID_GAME_VERIFY_RESP = 14;
+    short CID_GAME_VERIFY_RESP = 15;
 
     //告知女巫狼人杀人信息
-    short CID_GAME_NOTIFY_WITCH_KILLED = 15;
+    short CID_GAME_NOTIFY_WITCH_KILLED = 16;
 
     //计时时间到，即请求天亮
-    short CID_GAME_TIMER_OVER = 16;
+    short CID_GAME_TIMER_OVER = 17;
 
     //请求竞选警长
-    short CID_GAME_ASK_CHIEF = 17;
+    short CID_GAME_ASK_CHIEF = 18;
 
     //请求竞选警长响应
-    short CID_GAME_ASK_CHIEF_RESP = 18;
-
-    //警上发言
-    short CID_GAME_POLICE_SPEAKING = 19;
+    short CID_GAME_ASK_CHIEF_RESP = 19;
 
     //取消竞选警长
-    short CID_GAME_QUIT_POLICE_RESP = 20;
-
+    short CID_GAME_QUIT_POLICE = 20;
 
     //取消竞选警长响应
-    short CID_GAME_QUIT_POLICE = 21;
+    short CID_GAME_QUIT_POLICE_RESP = 21;
 
-    //竞选警长投票
-    short CID_GAME_CHIEF_VOTE = 22;
+    //开始警上发言
+    short CID_GAME_POLICE_START_SPEAKING = 22;
 
-    //竞选警长投票响应
-    short CID_GAME_CHIEF_VOTE_RESP = 23;
+    //警上发言结束
+    short CID_GAME_POLICE_SPEAKING_END = 23;
+
+    //开始警长投票
+    short CID_GAME_START_CHIEF_VOTE = 24;
+
+    //警下投票
+    short CID_GAME_CHIEF_VOTE = 25;
+
+    //警下投票响应
+    short CID_GAME_CHIEF_VOTE_RESP = 26;
+
+    //选出警长响应
+    short CID_GAME_ELECT_CHIEF_RESP = 27;
 
     //投票出人请求
-    short CID_GAME_VOTE = 24;
+    short CID_GAME_VOTE = 28;
 
     //投票出人响应
-    short CID_GAME_VOTE_RESP = 25;
+    short CID_GAME_VOTE_RESP = 29;
 
-    //他人进入房间
-    short CID_GAME_OTHER_ENTER =26;
+
 
 
 

@@ -11,15 +11,25 @@ import java.util.*;
 public class GameInfo {
 
 
-
+    /**
+     * 狼人杀人信息
+     */
     private Map<Integer, Integer> killInfo = new HashMap<>();
+
+    /**
+     * 选举信息
+     */
+    private Map<Integer,Integer> voteInfo = new HashMap<>();
 
 
     /**
-     * 警长投票列表
+     * 竞选警长列表
      */
     private List<Integer> voteChiefs = new ArrayList<>();
 
+    /**
+     * 放弃竞选列表
+     */
     private List<Integer> quitChiefs = new ArrayList<>();
 
     public List<Integer> getQuitChiefs() {
@@ -37,30 +47,51 @@ public class GameInfo {
     public void addChiefVotes(Integer voteId) {
         this.voteChiefs.add(voteId);
     }
+
     public void quitChiefVotes(Integer voteId) {
         this.voteChiefs.remove(voteId);
     }
 
-    public int getVotePoliceNum(){
+    public int getVotePoliceNum() {
         return voteChiefs.size();
     }
 
 
     /**
      * 添加杀人信息
+     *
      * @param userId 用户id
      */
     public void putKillInfo(int userId) {
-        Integer num = killInfo.putIfAbsent(userId, 1);
-        if(num!=null){
-            killInfo.put(userId,num+1);
+       putInfo(killInfo,userId);
+    }
+
+
+    /**
+     * 添加投票信息
+     *
+     * @param userId 用户id
+     */
+    public void putVoteInfo(int userId) {
+        putInfo(voteInfo,userId);
+    }
+
+    public int getVoteWinner(){
+        return getVoteResult(voteInfo);
+    }
+
+    private void putInfo(Map<Integer, Integer> voteMap,int userId){
+        Integer num = voteMap.putIfAbsent(userId, 1);
+        if (num != null) {
+            voteMap.put(userId, num + 1);
         }
+
     }
 
     /**
      * 获取目前几个狼人已发送杀人请求
      */
-    public int getKillNumber(){
+    public int getKillNumber() {
         return killInfo.size();
 
     }
@@ -71,21 +102,25 @@ public class GameInfo {
      *
      * @return 0为意见持平，其他为玩家id
      */
-    public int getKilled(){
-        List<Map.Entry<Integer,Integer>> killList = new ArrayList<>(killInfo.entrySet());
-        Collections.sort(killList,(o1,o2)->o2.getValue().compareTo(o1.getValue()));
-        int first = killList.get(0).getValue();
-        if(killList.size()==1){
-            return killList.get(0).getKey();
+    public int getKilled() {
+        return getVoteResult(this.killInfo);
+    }
+
+    private int getVoteResult(Map<Integer, Integer> voteMap) {
+        List<Map.Entry<Integer, Integer>> sortMap = new ArrayList<>(voteMap.entrySet());
+        Collections.sort(sortMap, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
+        int first = sortMap.get(0).getValue();
+        if (sortMap.size() == 1) {
+            return sortMap.get(0).getKey();
         }
-        int second = killList.get(1).getValue();
-        if(first==second){
-            killInfo.clear();
+        int second = sortMap.get(1).getValue();
+        if (first == second) {
+            voteMap.clear();
             return 0;
-        }else{
-            int code = killList.get(0).getValue();
-            killInfo.clear();
-            return  code;
+        } else {
+            int code = sortMap.get(0).getValue();
+            voteMap.clear();
+            return code;
         }
     }
 

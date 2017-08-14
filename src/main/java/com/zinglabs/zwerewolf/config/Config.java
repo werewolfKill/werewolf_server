@@ -30,6 +30,9 @@ public interface Config {
     int GAME_STATUS_OVER_GOOD = 1;
     int GAME_STATUS_PROCESS= 0;
 
+    int VOTE_TYPE_CHIEF = 1;
+    int VOTE_TYPE_COMMON =2;
+
 
 
     //游戏流程中状态码

@@ -29,7 +29,9 @@ public class UserService {
         Map<Integer, UserChannel> allUserChan = IMChannelGroup.instance().getChannels();
         Map<Integer, UserChannel> retUserChan = new HashMap<>();
         players.forEach((id, ur) -> {
-            retUserChan.put(id, allUserChan.get(id));
+            if(!ur.isDead()){
+                retUserChan.put(id, allUserChan.get(id));
+            }
         });
         return retUserChan;
     }

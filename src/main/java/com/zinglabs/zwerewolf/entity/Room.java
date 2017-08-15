@@ -45,6 +45,23 @@ public class Room {
     private Map<Integer,UserRole> players = new HashMap<>();
 
     /**
+     * 存活列表
+     */
+    private List<Integer> liveList = new ArrayList<>();
+
+    public List<Integer> getLiveList() {
+        return liveList;
+    }
+
+    public void updateLiveList(List<Integer> deadList) {
+        for(int userId:deadList){
+            if(liveList.contains(userId)){
+                liveList.remove(userId);
+            }
+        }
+    }
+
+    /**
      * 游戏信息
      */
     private Map<Integer,NightInfo> gameInfoMap = new HashMap<>();
@@ -135,6 +152,7 @@ public class Room {
         userRole.setPosition(players.size() + 1);
         userRole.setUserId(userId);
         players.put(userId, userRole);
+        liveList.add(userId);
         return true;
     }
 

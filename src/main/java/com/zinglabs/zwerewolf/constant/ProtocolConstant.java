@@ -170,11 +170,32 @@ public interface ProtocolConstant {
     //选出警长响应
     short CID_GAME_ELECT_CHIEF_RESP = 27;
 
-    //投票出人请求
-    short CID_GAME_VOTE = 28;
+    //警长决定发言顺序
+    short CID_GAME_CHIEF_DECIDE_SPEAK = 28;
 
-    //投票出人响应
-    short CID_GAME_VOTE_RESP = 29;
+    //开始发言
+    short CID_GAME_START_SPEAKING = 29;
+
+    //请求投票
+    short CID_GAME_REQ_VOTE = 30;
+
+    //请求警长归票
+    short CID_GAME_CHIEF_REQ_SUM_TICKET = 31;
+
+    //警长归票
+    short CID_GAME_CHIEF_SUM_TICKET = 32;
+
+    //请求投票响应
+    short CID_GAME_REQ_VOTE_RESP = 33;
+
+    //投票
+    short CID_GAME_VOTE= 34;
+
+    //投票响应
+    short CID_GAME_VOTE_RESP= 35;
+
+    //请求天黑
+    short CID_GAME_REQ_DARK = 36;
 
 
 

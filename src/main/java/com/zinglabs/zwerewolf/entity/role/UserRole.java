@@ -30,26 +30,6 @@ public class UserRole {
      */
     private boolean isDead;
 
-    /**
-     * 是否被女巫救
-     */
-    private boolean isSaved;
-
-    /**
-     * 是否被女巫毒
-     */
-    private boolean isPoisoned;
-
-    /**
-     * 是否被狼杀
-     */
-    private boolean isKilled;
-
-    /**
-     * 是否被守卫
-     */
-    private boolean isGuarded;
-
     public boolean isDead() {
         return isDead;
     }
@@ -98,37 +78,7 @@ public class UserRole {
         this.position = position;
     }
 
-    public boolean isSaved() {
-        return isSaved;
-    }
 
-    public void setSaved(boolean saved) {
-        isSaved = saved;
-    }
-
-    public boolean isPoisoned() {
-        return isPoisoned;
-    }
-
-    public void setPoisoned(boolean poisoned) {
-        isPoisoned = poisoned;
-    }
-
-    public boolean isKilled() {
-        return isKilled;
-    }
-
-    public void setKilled(boolean isKilled) {
-        this.isKilled = isKilled;
-    }
-
-    public boolean isGuarded() {
-        return isGuarded;
-    }
-
-    public void setGuarded(boolean guarded) {
-        isGuarded = guarded;
-    }
 
     public Role getRole() {
         return role;

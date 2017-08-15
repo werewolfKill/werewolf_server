@@ -237,6 +237,66 @@ public class GameController implements BaseController {
                 doVoteTimer(gameInfo,1000,Config.VOTE_TYPE_CHIEF,roomChannels);
 
                 break;
+            case ProtocolConstant.CID_GAME_CHIEF_DECIDE_SPEAK: //开始发言
+                room = gameService.checkAndGetRoom(roomId);
+                int speakBase,speakId;
+                if (room == null) {
+                    return;
+                }
+                //上一夜死亡名单
+                List<Integer> list = room.getGameInfoMap().get(bout-1).getDeadList();
+                if(list.size()>0){
+                    speakBase = list.get(0);
+                }else{
+                    speakBase = room.getChiefId();
+                }
+                int size = room.getLiveList().size();
+                speakId = room.getLiveList().get(new Random().nextInt(size)-1);
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_SPEAKING,
+                        0, speakId);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                break;
+            case ProtocolConstant.CID_GAME_REQ_VOTE:  //请求投票
+                room = gameService.checkAndGetRoom(roomId);
+                if (room == null) {
+                    return;
+                }
+                Integer chief = room.getChiefId();
+                if(chief>0){
+                    responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_CHIEF_REQ_SUM_TICKET,
+                            0, 0);
+                    userChannel = roomChannels.get(chief);
+                    msgGourp.put(userChannel, responseBody);
+                    IMBusinessManager.sendGroup(msgGourp);
+                }else{
+                    responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_REQ_VOTE_RESP,
+                        0, 0);
+                    roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
+                    IMBusinessManager.sendGroup(msgGourp);
+                }
+                break;
+            case ProtocolConstant.CID_GAME_CHIEF_SUM_TICKET://警长归票
+                room = gameService.checkAndGetRoom(roomId);
+                if (room == null) {
+                    return;
+                }
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_REQ_VOTE_RESP,
+                        0, code);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                gameInfo = gameService.getGameInfo(roomId);
+                doVoteTimer(gameInfo,1000,Config.VOTE_TYPE_COMMON,roomChannels);
+                break;
+            case ProtocolConstant.CID_GAME_REQ_DARK://要求进入天黑
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_DARK,
+                        0, 0);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                break;
+
+
+
 
         }
 
@@ -278,6 +338,7 @@ public class GameController implements BaseController {
                    ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_GAME,ProtocolConstant.CID_GAME_ELECT_CHIEF_RESP,0,userId);
                    channelMap.forEach((id,chan)-> msgGourp.put(chan,responseBody));
                    IMBusinessManager.sendGroup(msgGourp);
+                   UserChannel chiefChan = channelMap.get(userId);
                }
                else if(type==Config.VOTE_TYPE_COMMON){
                    ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_GAME,ProtocolConstant.CID_GAME_VOTE_RESP,0,userId);
@@ -306,6 +367,7 @@ public class GameController implements BaseController {
         if (deadList.size() > 0) {
             param.put("killed", deadList);
         }
+        room.updateLiveList(deadList);
         responseBody.setParam(param);
         roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
         IMBusinessManager.sendDawnMsg(msgGourp);

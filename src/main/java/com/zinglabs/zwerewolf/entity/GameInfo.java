@@ -107,6 +107,9 @@ public class GameInfo {
     }
 
     private int getVoteResult(Map<Integer, Integer> voteMap) {
+        if(voteMap==null||voteMap.size()==0){
+            return 0;
+        }
         List<Map.Entry<Integer, Integer>> sortMap = new ArrayList<>(voteMap.entrySet());
         Collections.sort(sortMap, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         int first = sortMap.get(0).getValue();

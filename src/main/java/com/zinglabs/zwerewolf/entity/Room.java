@@ -35,7 +35,7 @@ public class Room {
     /**
      * 警长id
      */
-    private int chiefId;
+    private int chief;
 
 
 
@@ -53,7 +53,7 @@ public class Room {
         return liveList;
     }
 
-    public void updateLiveList(List<Integer> deadList) {
+    public void updateLiveList(Integer ... deadList) {
         for(int userId:deadList){
             if(liveList.contains(userId)){
                 liveList.remove(userId);
@@ -80,8 +80,8 @@ public class Room {
         return killLIst;
     }
 
-    public void addKilled(int userId) {
-        killLIst.add(userId);
+    public void addKilled(int pos) {
+        killLIst.add(pos);
     }
 
 
@@ -152,7 +152,7 @@ public class Room {
         userRole.setPosition(players.size() + 1);
         userRole.setUserId(userId);
         players.put(userId, userRole);
-        liveList.add(userId);
+        liveList.add(userRole.getPosition());
         return true;
     }
 
@@ -165,15 +165,13 @@ public class Room {
         return gameInfoMap;
     }
 
-    public int getChiefId() {
-        return chiefId;
+    public int getChief() {
+        return chief;
     }
 
-    public void setChiefId(int chiefId) {
-        this.chiefId = chiefId;
+    public void setChief(int chief) {
+        this.chief = chief;
     }
-
-
 
     public void setGameInfoMap(Map<Integer, NightInfo> gameInfoMap) {
         this.gameInfoMap = gameInfoMap;

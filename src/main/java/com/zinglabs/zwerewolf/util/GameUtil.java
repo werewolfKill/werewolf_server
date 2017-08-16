@@ -1,6 +1,7 @@
 package com.zinglabs.zwerewolf.util;
 
 import com.zinglabs.zwerewolf.config.Config;
+import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.role.*;
 
 import java.util.ArrayList;
@@ -125,6 +126,16 @@ public class GameUtil {
     public static boolean verify(int roleId) {
         return roleId != Config.ROLE_CODE_OF_WOLF;
 
+    }
+
+    public static int getIdByPos(Map<Integer, UserRole> players, int pos){
+        int id = 0;
+        for(UserRole ur:players.values()){
+            if(ur.getPosition()==pos){
+               id = ur.getUserId();
+            }
+        }
+        return id;
     }
 
     /**

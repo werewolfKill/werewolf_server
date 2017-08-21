@@ -10,6 +10,57 @@ import java.util.*;
  */
 public class GameInfo {
 
+    /**
+     * 警上是否投过票
+     */
+    private boolean isChiefVote;
+
+
+    public boolean isChiefVote() {
+        return isChiefVote;
+    }
+
+    public void setChiefVote(boolean isChiefVote) {
+        this.isChiefVote = isChiefVote;
+    }
+
+    /**
+     * 某天是否投票
+     */
+    private Map<Integer,Boolean> isVoteMap =  new HashMap<>();
+
+    /**
+     * 某天请求次数
+     */
+    private Map<Integer,Integer> askVoteMap = new HashMap<>();
+
+    public int getAskVote(int bout) {
+        if(askVoteMap==null){
+            return 0;
+        }
+        return askVoteMap.get(bout);
+    }
+
+    public void addAskVote(int bout) {
+        if(askVoteMap==null){
+           askVoteMap = new HashMap<>();
+        }
+       int num = askVoteMap.putIfAbsent(bout,0);
+       if(num!=0){
+           askVoteMap.put(bout,num+1);
+       }
+    }
+
+    public boolean getIsVote(int bout) {
+        if(isVoteMap==null){
+            return false;
+        }
+        return isVoteMap.get(bout);
+    }
+
+    public void setIsVote(int bout,boolean isVote) {
+        this.isVoteMap.put(bout,isVote);
+    }
 
     /**
      * 狼人杀人信息
@@ -31,6 +82,16 @@ public class GameInfo {
      * 放弃竞选列表
      */
     private List<Integer> quitChiefs = new ArrayList<>();
+
+    private int speakEndNum;
+
+    public int getSpeakEndNum() {
+        return speakEndNum;
+    }
+
+    public void addSpeakEndNum() {
+        this.speakEndNum+=1;
+    }
 
     public List<Integer> getQuitChiefs() {
         return quitChiefs;

@@ -272,7 +272,7 @@ public class GameController implements BaseController {
                 Integer chief = room.getChief();
                 gameInfo = gameService.getGameInfo(roomId);
                 gameInfo.addAskVote(bout);
-                if(gameInfo.getAskVote(bout)<room.getLiveList().size()||gameInfo.getAskVote(bout)==2){
+                if(gameInfo.getAskVote(bout)<room.getLiveList().size()&&gameInfo.getAskVote(bout)<2){
                     return;
                 }
                 if(chief>0){

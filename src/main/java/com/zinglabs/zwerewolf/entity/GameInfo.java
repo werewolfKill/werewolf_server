@@ -45,13 +45,13 @@ public class GameInfo {
         if(askVoteMap==null){
            askVoteMap = new HashMap<>();
         }
-       int num = askVoteMap.putIfAbsent(bout,0);
-       if(num!=0){
+       Integer num = askVoteMap.putIfAbsent(bout,1);
+       if(num!=null){
            askVoteMap.put(bout,num+1);
        }
     }
 
-    public boolean getIsVote(int bout) {
+    public Boolean getIsVote(int bout) {
         if(isVoteMap==null){
             return false;
         }

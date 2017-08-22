@@ -40,6 +40,7 @@ public interface Config {
     int ROOM_NOT_EXIST = -1;  //房间不存在
     int ROOM_ALREADY_FULL = -2; //房间已满
     int ROOM_NOT_ENOUGH_NUM = -3; //房间人数不够
+    int ROOM_NOT_ALL_READY = -4; //房间人数不够
 
 
 

@@ -70,7 +70,6 @@ public class BusinessController implements BaseController {
                     Map<String, Object> param = new HashMap<>();
                     param.put("room", serRoom);
                     enterBody.setParam(param);
-//                    otherBody.
                     Map<Integer, UserChannel> roomChannels = userService.getByRoomId(code);
                     roomChannels.forEach((id, chan) -> {
                         if (id == fromId) {

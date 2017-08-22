@@ -37,6 +37,11 @@ public class Room {
      */
     private int chief;
 
+    /**
+     * 表示第几天
+     */
+    private int bout;
+
 
 
     /**
@@ -54,7 +59,7 @@ public class Room {
     }
 
     public void updateLiveList(Integer ... deadList) {
-        for(int userId:deadList){
+        for(Integer userId:deadList){
             if(liveList.contains(userId)){
                 liveList.remove(userId);
             }
@@ -66,10 +71,7 @@ public class Room {
      */
     private Map<Integer,NightInfo> gameInfoMap = new HashMap<>();
 
-    /**
-     * 表示第几天
-     */
-    private int bout;
+
 
     /**
      * 狼人杀人列表

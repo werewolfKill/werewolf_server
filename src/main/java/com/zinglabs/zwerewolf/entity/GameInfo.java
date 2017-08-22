@@ -27,39 +27,53 @@ public class GameInfo {
     /**
      * 某天是否投票
      */
-    private Map<Integer,Boolean> isVoteMap =  new HashMap<>();
+    private Map<Integer, Boolean> isVoteMap = new HashMap<>();
+
+    /**
+     * 某天狼人是否确定杀人信息
+     */
+    private Map<Integer,Boolean> isKillMap = new HashMap<>();
 
     /**
      * 某天请求次数
      */
-    private Map<Integer,Integer> askVoteMap = new HashMap<>();
+    private Map<Integer, Integer> askVoteMap = new HashMap<>();
 
     public int getAskVote(int bout) {
-        if(askVoteMap==null){
+        if (askVoteMap == null) {
             return 0;
         }
         return askVoteMap.get(bout);
     }
 
     public void addAskVote(int bout) {
-        if(askVoteMap==null){
-           askVoteMap = new HashMap<>();
+        if (askVoteMap == null) {
+            askVoteMap = new HashMap<>();
         }
-       Integer num = askVoteMap.putIfAbsent(bout,1);
-       if(num!=null){
-           askVoteMap.put(bout,num+1);
-       }
+        Integer num = askVoteMap.putIfAbsent(bout, 1);
+        if (num != null) {
+            askVoteMap.put(bout, num + 1);
+        }
     }
 
     public Boolean getIsVote(int bout) {
-        if(isVoteMap==null){
+        if (isVoteMap == null) {
             return false;
         }
         return isVoteMap.get(bout);
     }
+    public Boolean getIsKill(int bout) {
+        if (isKillMap == null) {
+            return false;
+        }
+        return isKillMap.get(bout);
+    }
 
-    public void setIsVote(int bout,boolean isVote) {
-        this.isVoteMap.put(bout,isVote);
+    public void setIsVote(int bout, boolean isVote) {
+        this.isVoteMap.put(bout, isVote);
+    }
+    public void setIsKill(int bout, boolean isKill) {
+        this.isKillMap.put(bout, isKill);
     }
 
     /**
@@ -70,7 +84,7 @@ public class GameInfo {
     /**
      * 选举信息
      */
-    private Map<Integer,Integer> voteInfo = new HashMap<>();
+    private Map<Integer, Integer> voteInfo = new HashMap<>();
 
 
     /**
@@ -90,7 +104,7 @@ public class GameInfo {
     }
 
     public void addSpeakEndNum() {
-        this.speakEndNum+=1;
+        this.speakEndNum += 1;
     }
 
     public List<Integer> getQuitChiefs() {
@@ -124,7 +138,7 @@ public class GameInfo {
      * @param userId 用户id
      */
     public void putKillInfo(int userId) {
-       putInfo(killInfo,userId);
+        putInfo(killInfo, userId);
     }
 
 
@@ -134,14 +148,14 @@ public class GameInfo {
      * @param userId 用户id
      */
     public void putVoteInfo(int userId) {
-        putInfo(voteInfo,userId);
+        putInfo(voteInfo, userId);
     }
 
-    public int getVoteWinner(){
+    public int getVoteWinner() {
         return getVoteResult(voteInfo);
     }
 
-    private void putInfo(Map<Integer, Integer> voteMap,int userId){
+    private void putInfo(Map<Integer, Integer> voteMap, int userId) {
         Integer num = voteMap.putIfAbsent(userId, 1);
         if (num != null) {
             voteMap.put(userId, num + 1);
@@ -168,24 +182,14 @@ public class GameInfo {
     }
 
     private int getVoteResult(Map<Integer, Integer> voteMap) {
-        if(voteMap==null||voteMap.size()==0){
+        if (voteMap == null || voteMap.size() == 0) {
             return 0;
         }
         List<Map.Entry<Integer, Integer>> sortMap = new ArrayList<>(voteMap.entrySet());
         Collections.sort(sortMap, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
-        int first = sortMap.get(0).getValue();
-        if (sortMap.size() == 1) {
-            return sortMap.get(0).getKey();
-        }
-        int second = sortMap.get(1).getValue();
-        if (first == second) {
-            voteMap.clear();
-            return 0;
-        } else {
-            int code = sortMap.get(0).getValue();
-            voteMap.clear();
-            return code;
-        }
+        int code =  sortMap.get(0).getKey();
+        voteMap.clear();
+        return code;
     }
 
 }

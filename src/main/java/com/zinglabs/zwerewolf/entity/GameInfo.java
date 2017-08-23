@@ -35,7 +35,7 @@ public class GameInfo {
     private Map<Integer,Boolean> isKillMap = new HashMap<>();
 
     /**
-     * 某天请求次数
+     * 某天请求投票次数
      */
     private Map<Integer, Integer> askVoteMap = new HashMap<>();
 

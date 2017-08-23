@@ -149,6 +149,9 @@ public class GameUtil {
         int wolf_num =0;
         int god_num = 0;
         for(UserRole ur:players.values()){
+            if(ur.isDead()){
+                continue;
+            }
             int roleId = ur.getRoleId();
             if(roleId==Config.ROLE_CODE_OF_WOLF){
                 wolf_num++;

@@ -9,6 +9,11 @@ import java.util.List;
  */
 public class NightInfo {
 
+    /**
+     * 是否请求过进入天黑
+     */
+    private volatile boolean isAskNight;
+
 
     private int killId;
 
@@ -18,7 +23,14 @@ public class NightInfo {
 
     private int poisonId;
 
-//    private
+    //    private
+    public boolean isAskNight() {
+        return isAskNight;
+    }
+
+    public void setAskNight(boolean askNight) {
+        isAskNight = askNight;
+    }
 
     public int getKillId() {
         return killId;
@@ -52,12 +64,12 @@ public class NightInfo {
         this.poisonId = poisonId;
     }
 
-    public List<Integer> getDeadList(){
+    public List<Integer> getDeadList() {
         List<Integer> list = new ArrayList<>(2);
-        if(killId!=saveId&&killId!=guardianId||killId==saveId&&killId==guardianId){
+        if (killId != saveId && killId != guardianId || killId == saveId && killId == guardianId) {
             list.add(killId);
         }
-        if(poisonId>0){
+        if (poisonId > 0) {
             list.add(poisonId);
         }
         return list;

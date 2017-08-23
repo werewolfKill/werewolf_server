@@ -117,15 +117,16 @@ public class GameService {
         return ready;
     }
     public boolean isAllReady(Room room) {
-        Map<Integer, UserRole> players = room.getPlayers();
-        int owner = room.getOwner();
-        boolean isReady = true;
-        for (UserRole ur : players.values()) {
-            if (!ur.isReady() && ur.getUserId() != owner) {
-                isReady = false;
-                break;
-            }
-        }
-        return isReady;
+//        Map<Integer, UserRole> players = room.getPlayers();
+//        int owner = room.getOwner();
+//        boolean isReady = true;
+//        for (UserRole ur : players.values()) {
+//            if (!ur.isReady() && ur.getUserId() != owner) {
+//                isReady = false;
+//                break;
+//            }
+//        }
+//        return isReady;
+        return true;
     }
 }

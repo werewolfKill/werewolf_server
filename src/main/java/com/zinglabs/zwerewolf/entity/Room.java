@@ -40,7 +40,7 @@ public class Room {
     /**
      * 表示第几天
      */
-    private int bout;
+    private volatile int bout;
 
 
 
@@ -59,9 +59,11 @@ public class Room {
     }
 
     public void updateLiveList(Integer ... deadList) {
-        for(Integer userId:deadList){
-            if(liveList.contains(userId)){
-                liveList.remove(userId);
+        for(Integer userPos:deadList){
+            if(liveList.contains(userPos)){
+                int userId = GameUtil.getIdByPos(players,userPos);
+                players.get(userId).setDead(true);
+                liveList.remove(userPos);
             }
         }
     }

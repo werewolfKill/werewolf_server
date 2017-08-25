@@ -307,6 +307,16 @@ public class GameController implements BaseController {
 
                 doDawnTimer(roomId, bout, 60 * 1000);
                 break;
+            case ProtocolConstant.CID_GAME_CHANGE_CHIEF: //移交警徽
+                if(room.getGameInfoMap().get(bout)!=null&&room.getGameInfoMap().get(bout).isAskNight()){
+                    return;
+                }
+                room.setChief(code);
+                responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_CHANGE_CHIEF_RESP,
+                        fromId, code);
+                roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
+                IMBusinessManager.sendGroup(msgGourp);
+                break;
         }
 
     }

@@ -197,6 +197,12 @@ public interface ProtocolConstant {
     //请求天黑
     short CID_GAME_REQ_DARK = 36;
 
+    //警徽移交
+    short CID_GAME_CHANGE_CHIEF = 37;
+
+    //警徽移交响应
+    short CID_GAME_CHANGE_CHIEF_RESP = 38;
+
 
 
 

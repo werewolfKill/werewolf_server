@@ -43,7 +43,7 @@ public class BusinessService {
         Room room = new Room(room_Id, modelId, userId);
         room.enterRoom(userId);
         //----模拟数据测试用 开始------
-        int start = room.getCurNumber()+1;
+        int start = room.getCurNumber()+2;
         for(int i=start;i<room.getNumber();i++){
             int tid = 200+i;
             IMChannelGroup.instance().setUserChannel(tid,new UserChannel());

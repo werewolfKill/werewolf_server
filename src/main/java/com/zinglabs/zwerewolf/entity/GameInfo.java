@@ -15,6 +15,18 @@ public class GameInfo {
      */
     private boolean isChiefVote;
 
+    /**
+     * 警上是否已发言
+     */
+    private boolean isChiefSpeak;
+
+    public boolean isChiefSpeak() {
+        return isChiefSpeak;
+    }
+
+    public void setChiefSpeak(boolean chiefSpeak) {
+        isChiefSpeak = chiefSpeak;
+    }
 
     public boolean isChiefVote() {
         return isChiefVote;

@@ -4,10 +4,7 @@ import com.zinglabs.zwerewolf.config.Config;
 import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.role.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangtonghe
@@ -128,11 +125,11 @@ public class GameUtil {
 
     }
 
-    public static int getIdByPos(Map<Integer, UserRole> players, int pos){
+    public static int getIdByPos(Map<Integer, UserRole> players, int pos) {
         int id = 0;
-        for(UserRole ur:players.values()){
-            if(ur.getPosition()==pos){
-               id = ur.getUserId();
+        for (UserRole ur : players.values()) {
+            if (ur.getPosition() == pos) {
+                id = ur.getUserId();
             }
         }
         return id;
@@ -140,32 +137,101 @@ public class GameUtil {
 
     /**
      * 比较输赢
+     *
      * @param players 玩家集合
      * @return 0表示游戏未结束；1表示好人获胜；-1表示狼人获胜
      */
     public static int isGameOver(Map<Integer, UserRole> players) {
         int isOver = Config.GAME_STATUS_PROCESS;
-        int vill_num =0;
-        int wolf_num =0;
+        int vill_num = 0;
+        int wolf_num = 0;
         int god_num = 0;
-        for(UserRole ur:players.values()){
-            if(ur.isDead()){
+        for (UserRole ur : players.values()) {
+            if (ur.isDead()) {
                 continue;
             }
             int roleId = ur.getRoleId();
-            if(roleId==Config.ROLE_CODE_OF_WOLF){
+            if (roleId == Config.ROLE_CODE_OF_WOLF) {
                 wolf_num++;
-            }else if(roleId==Config.ROLE_CODE_OF_VILLAGER){
+            } else if (roleId == Config.ROLE_CODE_OF_VILLAGER) {
                 vill_num++;
-            }else{
+            } else {
                 god_num++;
             }
         }
-        if(wolf_num==0){
+        if (wolf_num == 0) {
             return Config.GAME_STATUS_OVER_GOOD;
-        }else if(vill_num==0||god_num==0){
+        } else if (vill_num == 0 || god_num == 0) {
             return Config.GAME_STATUS_OVER_WOLF;
         }
         return isOver;
+    }
+
+
+    /**
+     * 警长决定发言顺序
+     *
+     * @param room      房间
+     * @param actionPos 警长或死者位置
+     * @param isLeft    从左或右发言
+     */
+    public static int decideSpeak(Room room, int actionPos, boolean isLeft) {
+
+        int speakPos;
+        List<Integer> lives = room.getLiveList();
+        int size = lives.size();
+        Collections.sort(lives);
+        if (isLeft) {
+            speakPos = GameUtil.nearMin(lives, actionPos);
+            if(speakPos==0){
+                speakPos = lives.get(size-1);
+            }
+        } else {
+
+            speakPos = GameUtil.nearMax(lives, actionPos);
+            if(speakPos==0){
+                speakPos = lives.get(0);
+            }
+        }
+        return speakPos;
+//        tmpIndex = lives.indexOf(actionPos);
+//
+//        if (isLeft) {  //右侧发言
+//            if (tmpIndex == 0) {
+//                speakPos = lives.get(lives.size() - 1);
+//            } else {
+//                speakPos = lives.get(tmpIndex);
+//            }
+//        } else {
+//            if (tmpIndex + 1 == lives.size()) {
+//                speakPos = lives.get(0);
+//            } else {
+//                speakPos = lives.get(tmpIndex);
+//            }
+//        }
+
+    }
+
+    private static int nearMin(List<Integer> list, int dest) {
+        int result = 0;
+        Collections.sort(list);
+        for (int pos : list) {
+            if (dest - pos > 0) {
+                result = pos;
+            }
+        }
+        return result;
+    }
+
+    private static int nearMax(List<Integer> list, int dest) {
+        int result = 0;
+        Collections.sort(list);
+        for (int pos : list) {
+            if (pos - dest > 0) {
+                result = pos;
+                break;
+            }
+        }
+        return result;
     }
 }

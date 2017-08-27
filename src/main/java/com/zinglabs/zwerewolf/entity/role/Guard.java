@@ -20,11 +20,11 @@ public class Guard  implements Role{
         return guardList;
     }
 
-    public boolean setGuardian(int userId){
+    public boolean setGuardian(int guard){
         if(guardList.size()==0){
-            guardList.add(userId);
+            guardList.add(guard);
         }else{
-            if(guardList.get(guardList.size()-1)==userId){
+            if(guardList.get(guardList.size()-1)==guard){
                 return false;
             }
         }

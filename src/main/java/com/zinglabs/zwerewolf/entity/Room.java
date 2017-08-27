@@ -3,6 +3,7 @@ package com.zinglabs.zwerewolf.entity;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.util.GameUtil;
 
+import java.lang.invoke.ConstantCallSite;
 import java.util.*;
 
 /**

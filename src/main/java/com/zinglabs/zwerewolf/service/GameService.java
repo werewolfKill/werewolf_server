@@ -74,7 +74,7 @@ public class GameService {
             ur.setRole(GameUtil.getRole(ur.getRoleId()));
 
             //测试
-            if(ur.getPosition()==11){
+            if(ur.getPosition()==1){
                 ur.setRoleId(Config.ROLE_CODE_OF_WOLF);
                 ur.setRole(GameUtil.getRole(ur.getRoleId()));
             }
@@ -82,11 +82,6 @@ public class GameService {
                 ur.setRoleId(Config.ROLE_CODE_OF_WITCH);
                 ur.setRole(GameUtil.getRole(ur.getRoleId()));
             }
-            if(ur.getPosition()==1){
-                ur.setRoleId(Config.ROLE_CODE_OF_GUARD);
-                ur.setRole(GameUtil.getRole(ur.getRoleId()));
-            }
-
             roleList.remove(rom_roleId);
         });
 

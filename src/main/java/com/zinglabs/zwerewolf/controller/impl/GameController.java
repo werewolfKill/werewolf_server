@@ -67,7 +67,7 @@ public class GameController implements BaseController {
                         fromId, ready);
                 roomChannels.forEach((id, chan) -> msgGourp.put(chan, readyBody));
                 IMBusinessManager.sendGroup(msgGourp);
-                testReadyTimer(roomId, 2000, room);
+                testReadyTimer(roomId, 1000, room);
                 break;
             case ProtocolConstant.CID_GAME_START_REQ: //开始游戏
                 room = gameService.checkAndGetRoom(roomId, fromId);
@@ -110,7 +110,7 @@ public class GameController implements BaseController {
                         msgGourp.put(uchan, resBody);
                     });
                     IMBusinessManager.sendStartMsg(msgGourp);
-                    doDawnTimer(roomId, bout, 60 * 1000);
+                    doDawnTimer(roomId, bout, 40 * 1000);
                 }
                 break;
             case ProtocolConstant.CID_GAME_KILL_REQ:   //狼人杀人
@@ -120,7 +120,7 @@ public class GameController implements BaseController {
                 }
                 GameInfo killInfo = gameService.getGameInfo(roomId);
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_KILL_RESP,
-                        fromId, code);  //code表示要杀的人的id
+                        fromId, code);  //code表示要杀的人的pos
                 killInfo.putKillInfo(code);
                 Map<Integer, UserChannel> wolfChannel = getWolfs(roomChannels, wolfRoom.getPlayers());
                 wolfChannel.forEach((id, chan) -> msgGourp.put(chan, responseBody));
@@ -149,11 +149,15 @@ public class GameController implements BaseController {
                                 0, killed);
                         Map<Integer, UserChannel> witchChannel = getRoleMapById(roomChannels, wolfRoom.getPlayers(), Config.ROLE_CODE_OF_WITCH);
                         msgGourp.clear();
-                        witchChannel.forEach((id, chan) -> msgGourp.put(chan, killBody));
+                        witchChannel.forEach((id, chan) -> {
+                            if(id!=fromId){
+                                msgGourp.put(chan, killBody);
+                            }
+                        });
                         IMBusinessManager.sendGroup(msgGourp);
                         killInfo.setIsKill(bout, true);
                     }
-                }, 30 * 1000);
+                }, 20 * 1000);
                 break;
             case ProtocolConstant.CID_GAME_SAVE_REQ:  //女巫救人请求
                 Witch saveWitch = (Witch) room.getPlayers().get(fromId).getRole();
@@ -203,7 +207,18 @@ public class GameController implements BaseController {
                         if (chiefInfo.isChiefSpeak()) {
                             return;
                         }
+                        //TODO 待优化
                         int size = chiefInfo.getChiefVotes().size();
+                        List<Integer> copyChiefs = new ArrayList<>(Arrays.asList(new Integer[size]));
+                        Collections.copy(copyChiefs,chiefInfo.getChiefVotes());
+                        copyChiefs.removeAll(chiefInfo.getQuitChiefs());
+                        if(copyChiefs.size()==0){ //TODO 若没人竞选警长
+                           ResponseBody noChiefseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_SPEAKING,
+                                    0,1 );
+                            roomChannels.forEach((id, chan) -> msgGourp.put(chan, noChiefseBody));
+                            IMBusinessManager.sendGroup(msgGourp);
+                            return;
+                        }
                         int rid = chiefInfo.getChiefVotes().get(new Random().nextInt(size)); //随机选取一人
                         ResponseBody voteBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_POLICE_START_SPEAKING,
                                 fromId, rid);
@@ -211,7 +226,7 @@ public class GameController implements BaseController {
                         chiefInfo.setChiefSpeak(true);
                         IMBusinessManager.sendGroup(msgGourp);
                     }
-                }, 1000 * 30);
+                }, 1000 * 20);
                 break;
             case ProtocolConstant.CID_GAME_QUIT_POLICE: //取消竞选警长
                 gameInfo = gameService.getGameInfo(roomId);
@@ -249,7 +264,7 @@ public class GameController implements BaseController {
                 doVoteTimer(gameInfo, 1000 * 15, Config.VOTE_TYPE_CHIEF, roomChannels, room);
 
                 break;
-            case ProtocolConstant.CID_GAME_CHIEF_DECIDE_SPEAK: //开始发言
+            case ProtocolConstant.CID_GAME_CHIEF_DECIDE_SPEAK: //警长决定发言顺序
                 int actionPos;
 
                 //上一夜死亡名单
@@ -259,10 +274,10 @@ public class GameController implements BaseController {
                 } else {
                     actionPos = room.getChief();
                 }
-                int speakPos = GameUtil.decideSpeak(room,actionPos,code==0);
+                int speakPos = GameUtil.decideSpeak(room,actionPos,code==0);  //code为左或右，0为左，1为右
 
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_SPEAKING,
-                        0, speakPos);
+                        code, speakPos);
                 roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
                 IMBusinessManager.sendGroup(msgGourp);
                 break;
@@ -273,7 +288,7 @@ public class GameController implements BaseController {
 //                if (gameInfo.getAskVote(bout) < room.getLiveList().size()) {  //请求投票数需为存活人数
 //                    return;
 //                }
-                if (gameInfo.getAskVote(bout) < 3) {  //测试
+                if (gameInfo.getAskVote(bout) < 2) {  //测试
                     return;
                 }
                 if (chief > 0) {
@@ -302,7 +317,7 @@ public class GameController implements BaseController {
             case ProtocolConstant.CID_GAME_VOTE:  //投票
                 gameInfo = gameService.getGameInfo(roomId);
                 gameInfo.putVoteInfo(code);
-                doVoteTimer(gameInfo, 1000 * 30, Config.VOTE_TYPE_COMMON, roomChannels, room);
+                doVoteTimer(gameInfo, 1000 * 20, Config.VOTE_TYPE_COMMON, roomChannels, room);
                 break;
             case ProtocolConstant.CID_GAME_REQ_DARK://要求进入天黑
 
@@ -315,12 +330,9 @@ public class GameController implements BaseController {
                 roomChannels.forEach((id, chan) -> msgGourp.put(chan, responseBody));
                 IMBusinessManager.sendGroup(msgGourp);
 
-                doDawnTimer(roomId, bout, 60 * 1000);
+                doDawnTimer(roomId, bout, 40 * 1000);
                 break;
             case ProtocolConstant.CID_GAME_CHANGE_CHIEF: //移交警徽
-                if (room.getGameInfoMap().get(bout) != null && room.getGameInfoMap().get(bout).isAskNight()) {
-                    return;
-                }
                 room.setChief(code);
                 responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_CHANGE_CHIEF_RESP,
                         fromId, code);

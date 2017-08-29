@@ -115,6 +115,7 @@ public class GameUtil {
         for (UserRole ur : players.values()) {
             if (ur.getRoleId() == roleId) {
                 role = ur.getRole();
+                break;
             }
         }
         return role;
@@ -194,22 +195,6 @@ public class GameUtil {
             }
         }
         return speakPos;
-//        tmpIndex = lives.indexOf(actionPos);
-//
-//        if (isLeft) {  //右侧发言
-//            if (tmpIndex == 0) {
-//                speakPos = lives.get(lives.size() - 1);
-//            } else {
-//                speakPos = lives.get(tmpIndex);
-//            }
-//        } else {
-//            if (tmpIndex + 1 == lives.size()) {
-//                speakPos = lives.get(0);
-//            } else {
-//                speakPos = lives.get(tmpIndex);
-//            }
-//        }
-
     }
 
     private static int nearMin(List<Integer> list, int dest) {

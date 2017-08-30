@@ -6,9 +6,7 @@ package com.zinglabs.zwerewolf.config;
  */
 public interface Config {
 
-    String SERVER_HOST = "192.168.0.102";
     int SERVER_PORT = 8080;
-    int LOGIN_PORT = 8090;
 
     //游戏模式
     int MODEL_12_YNLS = 1;  //12人预女列守经典版
@@ -30,8 +28,10 @@ public interface Config {
     int GAME_STATUS_OVER_GOOD = 1;
     int GAME_STATUS_PROCESS= 0;
 
-    int VOTE_TYPE_CHIEF = 1;
-    int VOTE_TYPE_COMMON =2;
+    int GAME_TYPE_CHIEF = 1;
+    int GAME_TYPE_COMMON =2;
+
+
 
 
 
@@ -41,6 +41,9 @@ public interface Config {
     int ROOM_ALREADY_FULL = -2; //房间已满
     int ROOM_NOT_ENOUGH_NUM = -3; //房间人数不够
     int ROOM_NOT_ALL_READY = -4; //房间人数不够
+
+    //游戏中时间
+    int TIME_GAME_SPEAK = 1000*10;
 
 
 

@@ -5,6 +5,7 @@ import com.zinglabs.zwerewolf.util.GameUtil;
 
 import java.lang.invoke.ConstantCallSite;
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * 房间实体类
@@ -34,7 +35,7 @@ public class Room {
     private int owner;
 
     /**
-     * 警长id
+     * 警长
      */
     private int chief;
 
@@ -75,6 +76,22 @@ public class Room {
     private Map<Integer,NightInfo> gameInfoMap = new HashMap<>();
 
 
+
+    private Map<Integer,SpeakInfo> gameSpeakMap = new HashMap<>();
+
+    public SpeakInfo getGameSpeakMap(int bout) {
+       if(gameSpeakMap==null){
+           return null;
+       }
+       return gameSpeakMap.get(bout);
+    }
+
+    public void setGameSpeakMap(int bout,SpeakInfo speakInfo) {
+        if(gameSpeakMap==null){
+            gameSpeakMap = new HashMap<>();
+        }
+        gameSpeakMap.put(bout,speakInfo);
+    }
 
     /**
      * 狼人杀人列表

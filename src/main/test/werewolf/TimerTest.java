@@ -14,9 +14,6 @@ import java.util.concurrent.CountDownLatch;
  */
 public class TimerTest {
 
-
-
-
     @Test
     public  void timeTest(){
         Timer timer = new Timer();
@@ -28,13 +25,24 @@ public class TimerTest {
                 System.out.println("hahh");
                 countDownLatch.countDown();
             }
-        },  1000);
+        },  10000);
         try {
+//            timer.cancel();  //取消定时器
             countDownLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
 
+    @Test
+    public void test(){
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("哈哈哈");
 
+            }
+        },2000);
     }
 }

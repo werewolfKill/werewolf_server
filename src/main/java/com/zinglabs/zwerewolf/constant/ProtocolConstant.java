@@ -203,6 +203,18 @@ public interface ProtocolConstant {
     //警徽移交响应
     short CID_GAME_CHANGE_CHIEF_RESP = 38;
 
+    //轮到某人发言
+    short CID_GAME_TURN_SPEAK = 39;
+
+    //轮到警上发言
+    short CID_GAME_TURN_CHIEF_SPEAK = 40;
+
+    //轮到某人聊天结束
+    short CID_GAME_TURN_SPEAK_END = 41;
+
+
+
+
 
 
 

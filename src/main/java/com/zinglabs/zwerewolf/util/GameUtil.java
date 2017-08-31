@@ -1,7 +1,6 @@
 package com.zinglabs.zwerewolf.util;
 
 import com.zinglabs.zwerewolf.config.Config;
-import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.role.*;
 
 import java.util.*;
@@ -174,63 +173,51 @@ public class GameUtil {
      *
      * @param list      未排序列表
      * @param actionPos 警长或死者位置
-     * @param isAsc    是否正序
+     * @param isAsc     是否正序
      */
     public static List<Integer> getSpeakList(List<Integer> list, int actionPos, boolean isAsc) {
         List<Integer> speakers = new ArrayList<>();
-
-        int speakPos,index=0;
         int size = list.size();
+        if(size==1){
+            speakers.addAll(list);
+            return speakers;
+        }
+        int index =0;
         if (isAsc) {
-            speakPos = GameUtil.nearMax(list, actionPos);
-            if(speakPos==0){
-                speakPos = list.get(0);
+            list.sort(Comparator.naturalOrder());
+            for (int i = 0; i < size; i++) {
+                if (list.get(i) > actionPos) {
+                    if (speakers.size() == 0) {
+                        index = i;
+                    }
+                    speakers.add(list.get(i));
+                }
             }
         } else {
-            speakPos = GameUtil.nearMin(list, actionPos);
-            if(speakPos==0){
-                speakPos = list.get(size-1);
-            }
-        }
-        for (int i = 0; i < size; i++) {
-            if (list.get(i) >= speakPos) {
-                if (speakPos == list.get(i)) {
-                    index = i;
+            list.sort(Comparator.reverseOrder());
+            for (int i = 0; i < size; i++) {
+                if (list.get(i) < actionPos) {
+                    if (speakers.size() == 0) {
+                        index = i;
+                    }
+                    speakers.add(list.get(i));
                 }
-                speakers.add(list.get(i));
             }
         }
-        if (index > 1) {
-            speakers.addAll(speakers.subList(0, index));
-        }
-        if(!isAsc){
-            Collections.reverse(speakers);
-            speakers.set(0,speakers.get(size-1));
-            speakers.remove(size-1);
+        if (index > 0) {
+            speakers.addAll(list.subList(0,index));
+        }else{
+            speakers.addAll(list);
         }
         return speakers;
     }
 
-    private static int nearMin(List<Integer> list, int dest) {
-        int result = 0;
-        Collections.sort(list);
-        for (int pos : list) {
-            if (dest - pos > 0) {
-                result = pos;
-            }
-        }
-        return result;
+    public static void main(String[] args) {
+        List<Integer> list = new ArrayList<>();
+        list.add(3);
+        getSpeakList(list,3,true);
+
     }
 
-    private static int nearMax(List<Integer> list, int dest) {
-        int result = 0;
-        Collections.sort(list);
-        for (int pos : list) {
-            if (pos - dest > 0) {
-                result = pos;
-                break;
-            }
-        }
-        return result;
-    }
+
 }

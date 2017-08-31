@@ -22,7 +22,14 @@ public class ListTest {
         Collections.copy(dest,src);
         System.out.println(dest);
 
+    }
 
+    @Test
+    public void test2(){
+
+        List<Integer> list = new ArrayList<>();
+        list.addAll(Arrays.asList(1,3,5,6,7));
+        System.out.println(list.subList(1,3));
 
     }
 }

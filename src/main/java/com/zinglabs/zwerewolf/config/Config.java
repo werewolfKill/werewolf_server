@@ -42,8 +42,29 @@ public interface Config {
     int ROOM_NOT_ENOUGH_NUM = -3; //房间人数不够
     int ROOM_NOT_ALL_READY = -4; //房间人数不够
 
-    //游戏中时间
+    /**
+     *  游戏中时间
+     */
+    //发言时间
     int TIME_GAME_SPEAK = 1000*10;
+
+    //投票时间
+    int TIME_GAME_VOTE = 1000*10;
+
+    //天黑时间
+    int TIME_GAME_DARK = 1000*30;
+
+    //狼人行动时间
+    int TIME_GAME_WOLF = 1000*10;
+
+    //女巫行动时间
+    int TIME_GAME_WITCH = 1000*20;
+
+    int TIME_GAME_VOTE_CHIEF = 1000*10;
+
+
+
+
 
 
 

@@ -46,7 +46,7 @@ public interface Config {
      *  游戏中时间
      */
     //发言时间
-    int TIME_GAME_SPEAK = 1000*10;
+    int TIME_GAME_SPEAK = 1000*5;
 
     //投票时间
     int TIME_GAME_VOTE = 1000*10;

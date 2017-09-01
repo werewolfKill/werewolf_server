@@ -46,7 +46,7 @@ public interface Config {
      *  游戏中时间
      */
     //发言时间
-    int TIME_GAME_SPEAK = 1000*5;
+    int TIME_GAME_SPEAK = 1000*20;
 
     //投票时间
     int TIME_GAME_VOTE = 1000*10;
@@ -60,6 +60,7 @@ public interface Config {
     //女巫行动时间
     int TIME_GAME_WITCH = 1000*20;
 
+    //警长竞选时间
     int TIME_GAME_VOTE_CHIEF = 1000*10;
 
 

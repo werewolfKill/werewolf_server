@@ -1,5 +1,6 @@
 package com.zinglabs.zwerewolf.entity;
 
+import javax.xml.bind.annotation.XmlType;
 import java.util.*;
 
 /**
@@ -9,6 +10,12 @@ import java.util.*;
  * @date 2017/8/2 08:08
  */
 public class GameInfo {
+
+
+
+    public static final double DEFAULT_MARK = 1;
+
+    public static final double DEFAULT_CHIEF_MARK = 1.5;
 
     /**
      * 警上是否投过票
@@ -91,12 +98,28 @@ public class GameInfo {
     /**
      * 狼人杀人信息
      */
-    private Map<Integer, Integer> killInfo = new HashMap<>();
+    private Map<Integer, Double> killInfo = new HashMap<>();
 
     /**
-     * 选举信息
+     * 投票信息
      */
-    private Map<Integer, Integer> voteInfo = new HashMap<>();
+    private Map<Integer, Double> voteInfo = new HashMap<>();
+
+    private Map<Integer,Map<Integer,Integer>> voteDetails = new HashMap<>();
+
+
+    public Map<Integer,Integer>  getVoteDetails(int bout){
+       return voteDetails.get(bout);
+    }
+
+    public void setVoteDetails(int bout,int voter,int voted){
+        if(voteDetails.get(bout)==null){
+            voteDetails.put(bout,new HashMap<>());
+        }
+        voteDetails.get(bout).put(voter,voted);
+    }
+
+
 
 
     /**
@@ -150,7 +173,7 @@ public class GameInfo {
      * @param userId 用户id
      */
     public void putKillInfo(int userId) {
-        putInfo(killInfo, userId);
+        putInfo(killInfo, userId,DEFAULT_MARK);
     }
 
 
@@ -160,17 +183,28 @@ public class GameInfo {
      * @param userId 用户id
      */
     public void putVoteInfo(int userId) {
-        putInfo(voteInfo, userId);
+        putInfo(voteInfo, userId,DEFAULT_MARK);
+    }
+
+
+    /**
+     * 添加投票信息
+     *
+     * @param userId 用户id
+     */
+    public void putVoteInfo(int userId,double mark) {
+        putInfo(voteInfo, userId,mark);
     }
 
     public int getVoteWinner() {
         return getVoteResult(voteInfo);
     }
 
-    private void putInfo(Map<Integer, Integer> voteMap, int userId) {
-        Integer num = voteMap.putIfAbsent(userId, 1);
+    private void putInfo(Map<Integer, Double> voteMap, int userId,double mark) {
+
+        Double num = voteMap.putIfAbsent(userId, mark);
         if (num != null) {
-            voteMap.put(userId, num + 1);
+            voteMap.put(userId, num + mark);
         }
 
     }
@@ -193,11 +227,11 @@ public class GameInfo {
         return getVoteResult(this.killInfo);
     }
 
-    private int getVoteResult(Map<Integer, Integer> voteMap) {
+    private int getVoteResult(Map<Integer, Double> voteMap) {
         if (voteMap == null || voteMap.size() == 0) {
             return 0;
         }
-        List<Map.Entry<Integer, Integer>> sortMap = new ArrayList<>(voteMap.entrySet());
+        List<Map.Entry<Integer, Double>> sortMap = new ArrayList<>(voteMap.entrySet());
         Collections.sort(sortMap, (o1, o2) -> o2.getValue().compareTo(o1.getValue()));
         int code =  sortMap.get(0).getKey();
         voteMap.clear();

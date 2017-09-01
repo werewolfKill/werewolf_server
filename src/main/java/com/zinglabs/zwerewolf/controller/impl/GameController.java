@@ -59,6 +59,7 @@ public class GameController implements BaseController {
         if (bout < room.getBout()) { //之前的消息
             return;
         }
+        int fromPos = room.getPlayers().get(fromId).getPosition();
         switch (commandId) {
             case ProtocolConstant.CID_GAME_READY_REQ:  //准备、离开游戏
 
@@ -226,7 +227,7 @@ public class GameController implements BaseController {
 
                         chiefRoom.setGameSpeakMap(0, speakInfo);  //警上发言，bout为0
 
-                        doSpeakTimer(chiefRoom,0, roomChannels, Config.TIME_GAME_SPEAK);
+                        doSpeakTimer(chiefRoom, 0, roomChannels, Config.TIME_GAME_SPEAK);
 
                     }
                 }, Config.TIME_GAME_VOTE_CHIEF);
@@ -263,13 +264,13 @@ public class GameController implements BaseController {
 //                break;
             case ProtocolConstant.CID_GAME_CHIEF_VOTE:  //警上投票
                 gameInfo = gameService.getGameInfo(roomId);
+                gameInfo.setVoteDetails(0, fromPos, code);  //警上投票bout为0
                 gameInfo.putVoteInfo(code);
                 doVoteTimer(gameInfo, Config.TIME_GAME_VOTE, Config.GAME_TYPE_CHIEF, roomChannels, room);
 
                 break;
             case ProtocolConstant.CID_GAME_CHIEF_DECIDE_SPEAK: //警长决定发言顺序
                 int actionPos;
-
                 //上一夜死亡名单
                 List<Integer> list = room.getGameInfoMap().get(bout - 1).getDeadList();
                 if (list.size() > 0) {
@@ -283,7 +284,7 @@ public class GameController implements BaseController {
 
                 SpeakInfo speakInfo = new SpeakInfo(queue, Config.GAME_TYPE_COMMON, new Timer());
                 room.setGameSpeakMap(bout, speakInfo);
-                doSpeakTimer(room,bout,roomChannels,Config.TIME_GAME_SPEAK);
+                doSpeakTimer(room, bout, roomChannels, Config.TIME_GAME_SPEAK);
                 break;
 //            case ProtocolConstant.CID_GAME_REQ_VOTE:  //请求投票
 //                Integer chief = room.getChief();
@@ -320,7 +321,12 @@ public class GameController implements BaseController {
                 break;
             case ProtocolConstant.CID_GAME_VOTE:  //投票
                 gameInfo = gameService.getGameInfo(roomId);
-                gameInfo.putVoteInfo(code);
+                gameInfo.setVoteDetails(bout, fromPos, code);
+                double mark = GameInfo.DEFAULT_CHIEF_MARK;
+                if(fromPos==room.getChief()){
+                    mark = GameInfo.DEFAULT_CHIEF_MARK;
+                }
+                gameInfo.putVoteInfo(code,mark);
                 doVoteTimer(gameInfo, Config.TIME_GAME_VOTE, Config.GAME_TYPE_COMMON, roomChannels, room);
                 break;
             case ProtocolConstant.CID_GAME_REQ_DARK://要求进入天黑
@@ -402,6 +408,7 @@ public class GameController implements BaseController {
 
     /**
      * 发言定时器
+     *
      * @param room
      * @param bout
      * @param roomChannels
@@ -432,17 +439,18 @@ public class GameController implements BaseController {
 
     /**
      * 下一位发言者，表示客户端发言者过麦
+     *
      * @param room
      * @param bout
      * @param roomChannels
      * @param time
      */
-    private void nextSpeak(Room room, int bout, Map<Integer, UserChannel> roomChannels,long time){
+    private void nextSpeak(Room room, int bout, Map<Integer, UserChannel> roomChannels, long time) {
         SpeakInfo speakInfo = room.getGameSpeakMap(bout);
         Timer timer = speakInfo.getTimer();
         timer.cancel();
-        timer = new Timer();
-        doSpeakTimer(room,bout,roomChannels,time);
+        speakInfo.setTimer(new Timer());
+        doSpeakTimer(room, bout, roomChannels, time);
     }
 
     private void speakEnd(int type, Room room, Map<Integer, UserChannel> roomChannels) {
@@ -522,7 +530,7 @@ public class GameController implements BaseController {
                     room.setChief(actionPos);
                     ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_ELECT_CHIEF_RESP, 0, actionPos);
                     channelMap.forEach((id, chan) -> msgGourp.put(chan, responseBody));
-                    IMBusinessManager.sendGroup(msgGourp);
+                    IMBusinessManager.sendVoteMsg(msgGourp, gameInfo.getVoteDetails(0));
                     gameInfo.setChiefVote(true);
                 } else if (type == Config.GAME_TYPE_COMMON) {
                     Boolean isVote = gameInfo.getIsVote(bout);
@@ -533,7 +541,7 @@ public class GameController implements BaseController {
                     room.updateLiveList(votePos);
                     ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_VOTE_RESP, 0, votePos);
                     channelMap.forEach((id, chan) -> msgGourp.put(chan, responseBody));
-                    IMBusinessManager.sendGroup(msgGourp);
+                    IMBusinessManager.sendVoteMsg(msgGourp, gameInfo.getVoteDetails(bout));
                     gameInfo.setIsVote(bout, true);
                 }
             }

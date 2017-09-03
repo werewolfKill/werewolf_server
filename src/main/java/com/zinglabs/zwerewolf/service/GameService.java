@@ -7,6 +7,7 @@ import com.zinglabs.zwerewolf.entity.Room;
 import com.zinglabs.zwerewolf.entity.role.UserRole;
 import com.zinglabs.zwerewolf.util.GameUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -78,11 +79,22 @@ public class GameService {
                 ur.setRoleId(Config.ROLE_CODE_OF_WOLF);
                 ur.setRole(GameUtil.getRole(ur.getRoleId()));
             }
-            if(ur.getPosition()==12){
+            if(ur.getPosition()==11){
                 ur.setRoleId(Config.ROLE_CODE_OF_WITCH);
                 ur.setRole(GameUtil.getRole(ur.getRoleId()));
             }
+            if(ur.getPosition()==12){
+                ur.setRoleId(Config.ROLE_CODE_OF_PROPHET);
+                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+            }
             roleList.remove(rom_roleId);
+        });
+
+        //测试
+        userRoleMap.forEach((id,ur)->{
+            if(ur.getPosition()!=11&&ur.getRoleId()==Config.ROLE_CODE_OF_WITCH){
+                ur.setRoleId(Config.ROLE_CODE_OF_VILLAGER);
+            }
         });
 
 //        userRoleMap.put()
@@ -115,6 +127,7 @@ public class GameService {
         }
         return ready;
     }
+
     public boolean isAllReady(Room room) {
 //        Map<Integer, UserRole> players = room.getPlayers();
 //        int owner = room.getOwner();

@@ -1,6 +1,5 @@
 package com.zinglabs.zwerewolf.entity;
 
-import javax.xml.bind.annotation.XmlType;
 import java.util.*;
 
 /**

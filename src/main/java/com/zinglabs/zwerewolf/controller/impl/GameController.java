@@ -175,7 +175,7 @@ public class GameController implements BaseController {
                 }
                 break;
             case ProtocolConstant.CID_GAME_VERIFY_REQ:  //预言家验人
-                int roleId = room.getPlayers().get(fromId).getRoleId();
+                int roleId = room.getPlayers().get(GameUtil.getIdByPos(room.getPlayers(),code)).getRoleId();
                 boolean isGood = GameUtil.verify(roleId);
                 Prophet prophet = (Prophet) room.getPlayers().get(fromId).getRole();
                 prophet.setVerifyMap(code, isGood);
@@ -212,15 +212,14 @@ public class GameController implements BaseController {
                         if (chiefInfo.isChiefSpeak()) {
                             return;
                         }
-                        int chiefNum = getPoliceNum(chiefInfo);
-                        if (chiefNum == 0) { //若没人竞选警长,略过竞选，直接发言
+                        List<Integer> chiefList =  getPoliceNum(chiefInfo);
+                        if (chiefList.size() == 0) { //若没人竞选警长,略过竞选，直接发言
                             //TODO 略过竞选，直接发言
                             return;
                         }
                         chiefInfo.setChiefSpeak(true);
-                        List<Integer> list = chiefInfo.getChiefVotes();
-                        int ranPos = list.get(new Random().nextInt(list.size())); //随机选取一人
-                        List<Integer> speakers = GameUtil.getSpeakList(list, ranPos, true);  //code为左或右，0为倒序，1为正序
+                        int ranPos = chiefList.get(new Random().nextInt(chiefList.size())); //随机选取一人
+                        List<Integer> speakers = GameUtil.getSpeakList(chiefList, ranPos, true);  //code为左或右，0为倒序，1为正序
                         BlockingQueue<Integer> queue = new ArrayBlockingQueue<>(speakers.size());
                         queue.addAll(speakers);
                         SpeakInfo speakInfo = new SpeakInfo(queue, Config.GAME_TYPE_CHIEF, new Timer());
@@ -485,12 +484,11 @@ public class GameController implements BaseController {
         ResponseBody responseBody = new ResponseBody(ProtocolConstant.SID_GAME, ProtocolConstant.CID_GAME_START_CHIEF_VOTE,
                 0, 0);
         List<Integer> chiefList = gameInfo.getChiefVotes();
-        List<Integer> quitList = gameInfo.getQuitChiefs();
         gameInfo.addSpeakEndNum();
-        if (gameInfo.getSpeakEndNum() == gameInfo.getVotePoliceNum()) {
+        if (gameInfo.getSpeakEndNum() == getPoliceNum(gameInfo).size()) {
             roomChannels.forEach((id, chan) -> {
                 int pos = room.getPlayers().get(id).getPosition();
-                if (!chiefList.contains(pos) || chiefList.contains(pos) && quitList.contains(pos)) {  //向未上警玩家发请求
+                if (!chiefList.contains(pos)) {  //向未上警玩家发请求
                     msgGourp.put(chan, responseBody);
                 }
             });
@@ -605,13 +603,13 @@ public class GameController implements BaseController {
         return roleChannel;
     }
 
-    private int getPoliceNum(GameInfo chiefInfo) {
+    private List<Integer> getPoliceNum(GameInfo chiefInfo) {
 
         int size = chiefInfo.getChiefVotes().size();
         List<Integer> copyChiefs = new ArrayList<>(Arrays.asList(new Integer[size]));
         Collections.copy(copyChiefs, chiefInfo.getChiefVotes());
         copyChiefs.removeAll(chiefInfo.getQuitChiefs());
-        return copyChiefs.size();
+        return copyChiefs;
     }
 
 

@@ -75,27 +75,27 @@ public class GameService {
             ur.setRole(GameUtil.getRole(ur.getRoleId()));
 
             //测试
-            if(ur.getPosition()==1){
-                ur.setRoleId(Config.ROLE_CODE_OF_WOLF);
-                ur.setRole(GameUtil.getRole(ur.getRoleId()));
-            }
-            if(ur.getPosition()==11){
-                ur.setRoleId(Config.ROLE_CODE_OF_WITCH);
-                ur.setRole(GameUtil.getRole(ur.getRoleId()));
-            }
-            if(ur.getPosition()==12){
-                ur.setRoleId(Config.ROLE_CODE_OF_PROPHET);
-                ur.setRole(GameUtil.getRole(ur.getRoleId()));
-            }
+//            if(ur.getPosition()==1){
+//                ur.setRoleId(Config.ROLE_CODE_OF_WOLF);
+//                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+//            }
+//            if(ur.getPosition()==11){
+//                ur.setRoleId(Config.ROLE_CODE_OF_WITCH);
+//                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+//            }
+//            if(ur.getPosition()==12){
+//                ur.setRoleId(Config.ROLE_CODE_OF_GUARD);
+//                ur.setRole(GameUtil.getRole(ur.getRoleId()));
+//            }
             roleList.remove(rom_roleId);
         });
 
         //测试
-        userRoleMap.forEach((id,ur)->{
-            if(ur.getPosition()!=11&&ur.getRoleId()==Config.ROLE_CODE_OF_WITCH){
-                ur.setRoleId(Config.ROLE_CODE_OF_VILLAGER);
-            }
-        });
+//        userRoleMap.forEach((id,ur)->{
+//            if(ur.getPosition()!=11&&ur.getRoleId()==Config.ROLE_CODE_OF_WITCH){
+//                ur.setRoleId(Config.ROLE_CODE_OF_VILLAGER);
+//            }
+//        });
 
 //        userRoleMap.put()
         return userRoleMap;
@@ -129,16 +129,15 @@ public class GameService {
     }
 
     public boolean isAllReady(Room room) {
-//        Map<Integer, UserRole> players = room.getPlayers();
-//        int owner = room.getOwner();
-//        boolean isReady = true;
-//        for (UserRole ur : players.values()) {
-//            if (!ur.isReady() && ur.getUserId() != owner) {
-//                isReady = false;
-//                break;
-//            }
-//        }
-//        return isReady;
-        return true;  //TODO 测试
+        Map<Integer, UserRole> players = room.getPlayers();
+        int owner = room.getOwner();
+        boolean isReady = true;
+        for (UserRole ur : players.values()) {
+            if (!ur.isReady() && ur.getUserId() != owner) {
+                isReady = false;
+                break;
+            }
+        }
+        return isReady;
     }
 }

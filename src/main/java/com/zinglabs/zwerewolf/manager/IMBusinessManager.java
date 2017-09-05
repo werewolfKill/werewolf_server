@@ -49,7 +49,7 @@ public class IMBusinessManager {
      *
      * @param senders 发送者集合
      */
-    public static void sendVoteMsg(Map<UserChannel, ResponseBody> senders, Map<Integer, Integer> voteMap) {
+    public static void sendVoteMsg(Map<UserChannel, ResponseBody> senders, Map<Integer, Integer> voteMap,int over) {
         senders.forEach((userChannel, body) -> {
             if (userChannel == null) {
                 return;
@@ -61,6 +61,7 @@ public class IMBusinessManager {
             ByteBuf byteBuf = toChannel.alloc().buffer();
             byteBuf.writeInt(body.getFromId());
             byteBuf.writeInt(body.getReply());
+            byteBuf.writeInt(over);
             int size = voteMap.size();
             if (size > 0) {
                 byteBuf.writeInt(size);

@@ -43,12 +43,12 @@ public class BusinessService {
         Room room = new Room(room_Id, modelId, userId);
         room.enterRoom(userId);
         //----模拟数据测试用 开始------
-        int start = room.getCurNumber()+2;
-        for(int i=start;i<room.getNumber();i++){
-            int tid = 200+i;
-            IMChannelGroup.instance().setUserChannel(tid,new UserChannel());
-            room.enterRoom(tid);
-        }
+//        int start = room.getCurNumber();
+//        for(int i=start;i<room.getNumber();i++){
+//            int tid = 200+i;
+//            IMChannelGroup.instance().setUserChannel(tid,new UserChannel());
+//            room.enterRoom(tid);
+//        }
         //----模拟数据测试用 结束------
         globalData.putRoomData(room_Id, room);
         globalData.putGameData(room_Id,new GameInfo());

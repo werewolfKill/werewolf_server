@@ -6,7 +6,7 @@ package com.zinglabs.zwerewolf.config;
  */
 public interface Config {
 
-    int SERVER_PORT = 8080;
+    int SERVER_PORT = 9000;
 
     //游戏模式
     int MODEL_12_YNLS = 1;  //12人预女列守经典版
@@ -46,7 +46,7 @@ public interface Config {
      *  游戏中时间
      */
     //发言时间
-    int TIME_GAME_SPEAK = 1000*5;
+    int TIME_GAME_SPEAK = 1000*20;
 
     //投票时间
     int TIME_GAME_VOTE = 1000*10;

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IMServer.iml" filepath="$PROJECT_DIR$/IMServer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WereWolf.iml" filepath="$PROJECT_DIR$/WereWolf.iml" />
     </modules>
   </component>
 </project>

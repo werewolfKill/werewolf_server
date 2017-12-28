@@ -7,10 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="IMServer" />
+        <module name="WereWolf" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
       <module name="IMServer" target="1.8" />
+      <module name="WereWolf" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

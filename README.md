@@ -1,23 +1,12 @@
-# IMServer
-使用Netty 实现的IM 系统-服务端
+# 狼人杀服务器端
 
+## 项目介绍
 
-### 完成的功能
-
-1. 均衡负载
-2. 登录
-3. 获取在线用户列表
-4. 单聊
-
-### Future
-
-1. 群聊
-
-### Simple
-
-
-![PCClient](./image/game-1.jpg)
+本项目是开源的狼人杀项目。其中以netty为网络通信框架。默认监听9000端口信息。目前客户端有Android版本，地址在[werewolf_android](https://github.com/werewolfKill/werewolf_android)。
 
 
 
-![Client](./image/game-2.jpg)
+
+
+
+

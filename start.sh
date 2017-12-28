@@ -1,0 +1,1 @@
+nohup java -jar zwerewolf-0.9.jar &>./wk.log &

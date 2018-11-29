@@ -27,8 +27,13 @@
         <module>zwerewolf-server-business</module>
         <module>zwerewolf-server-user</module>
         <module>zwerewolf-server-chat</module>
-        <module>zwerewolf-server-entity</module>
+        <module>zwerewolf-server-metadata</module>
     </modules>
+
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>

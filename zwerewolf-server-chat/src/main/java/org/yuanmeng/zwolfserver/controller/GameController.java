@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.yuanmeng.zwolfserver.annotation.RequestMapping;
 
 /**
- * 游戏流程控制 controller
+ * 游戏流程控制 org.yuanmeng.zwolfserver.sso.controller
  *
  * @author wangtonghe
  * @since 2018/10/5 20:58

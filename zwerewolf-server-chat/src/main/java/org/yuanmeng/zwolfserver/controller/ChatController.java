@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.yuanmeng.zwolfserver.annotation.RequestMapping;
 
 /**
- * 聊天消息 controller
+ * 聊天消息 org.yuanmeng.zwolfserver.sso.controller
  *
  * @author wangtonghe
  * @since 2018/10/5 20:52

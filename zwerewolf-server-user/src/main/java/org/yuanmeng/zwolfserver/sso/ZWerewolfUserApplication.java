@@ -2,11 +2,13 @@ package org.yuanmeng.zwolfserver.sso;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-public class ZkillServerSsoApplication {
+@EnableJpaRepositories
+public class ZWerewolfUserApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ZkillServerSsoApplication.class, args);
+        SpringApplication.run(ZWerewolfUserApplication.class, args);
     }
 }
